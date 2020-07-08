@@ -1,0 +1,12 @@
+.App {
+  display: flex;
+  justify-content: center;
+}
+
+.App img {
+  position: absolute;
+  left: 50vw;
+  top: 50vh;
+  width: 50vmin;
+  transform: translate(-50%, -50%);
+}

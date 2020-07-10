@@ -1,0 +1,24 @@
+.CatsFeed_Container {
+    min-height: calc(100vh - 150px);
+    padding: 40px 0 0;
+    background: #F8F8FF;
+    display: flex;
+    justify-content: center;
+}
+
+.CatsFeed_Border {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    height: 580px;
+    width: 980px;
+    border-radius: 10px;
+    padding: 20px;
+    background: #A3B6ED;
+}
+
+.CatsFeed_Row {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}

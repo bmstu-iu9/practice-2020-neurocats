@@ -1,12 +1,13 @@
 import React from "react";
 import "./App.css";
-import logo from "./logo.svg";
+import TopBar from "./TopBar/TopBar";
+import CatsFeed from "./CatsFeed/CatsFeed";
 
 function App() {
   return (
     <div className="App">
-      <h1>NeuroCats</h1>
-      <img src={logo} alt="logo" />
+        <TopBar/>
+        <CatsFeed/>
     </div>
   );
 }

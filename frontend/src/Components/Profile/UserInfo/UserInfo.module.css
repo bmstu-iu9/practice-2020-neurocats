@@ -1,0 +1,13 @@
+.UserInfo img {
+  object-fit: cover;
+  width: 250px;
+  height: 250px;
+}
+.name {
+  padding-top: 15.4%;
+  margin-left: 3%;
+}
+.UserInfo {
+  display: flex;
+  flex-flow: row;
+}

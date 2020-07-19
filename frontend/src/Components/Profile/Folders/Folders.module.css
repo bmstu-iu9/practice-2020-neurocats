@@ -1,0 +1,13 @@
+.folders {
+  display: flex;
+  flex-flow: row;
+  margin-left: 3.5%;
+}
+.blocks {
+  width: 68%;
+  height: 210px;
+  background: #EFD8D3;
+}
+.name {
+  margin-left: 5%;
+}

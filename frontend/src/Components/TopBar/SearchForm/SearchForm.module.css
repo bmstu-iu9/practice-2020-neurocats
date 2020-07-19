@@ -1,0 +1,28 @@
+form {
+  position: relative;
+  width: 310%;
+  background: #f8f4ff;
+}
+input, button {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+input {
+  width: 92%;
+  height: 42px;
+  padding-left: 15px;
+  font-size:25px ; 
+  font-weight:100px;
+}
+button {
+  height: 42px;
+  width: 42px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
+.fas.fa-search{
+  color: #ccc;
+}

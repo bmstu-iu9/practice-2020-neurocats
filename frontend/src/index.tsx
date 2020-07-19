@@ -4,12 +4,17 @@ import "normalize.css/normalize.css"
 import "./index.css";
 import App from "./Components/App";
 import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter } from "react-router-dom";
+import store from "./redux/state";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root"),
-);
 
+let renderTree = (state: any) => {
+  ReactDOM.render(
+    <BrowserRouter>
+      <App {...state}/>
+    </BrowserRouter>,
+    document.getElementById("root"),
+  );
+}
+renderTree(store.getState());
 serviceWorker.register();

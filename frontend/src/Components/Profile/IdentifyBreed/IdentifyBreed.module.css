@@ -1,0 +1,19 @@
+.content {
+  color: black;
+  font-family: "Times New Roman";
+  font-size: 20px;
+  font-weight: 100px;
+  width: 68%;
+  height: 160px;
+  background: #EFD8D3;
+}
+
+.items {
+  display: flex;
+  flex-flow: row;
+}
+
+.name {
+  margin-top: 7.5%;
+  margin-left: 5%;
+}

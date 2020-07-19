@@ -1,0 +1,27 @@
+.filesRow {
+  height: 142px;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  margin-left: 3%;
+  margin-top: 2%;
+}
+.files{
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  width: 142px;
+  height: 142px;
+}
+.OneFile {
+  margin: 10px;
+}
+.name {
+  margin-left: 5%;
+  color: black;
+  font-family: "Times New Roman"; 
+  font-size: 20px ; 
+  font-weight: 100px;
+  text-decoration: none;
+  margin-top: 2%;
+}

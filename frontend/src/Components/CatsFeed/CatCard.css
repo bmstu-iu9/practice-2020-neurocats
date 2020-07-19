@@ -1,6 +1,7 @@
 .CatCard_Container {
+    margin-right: 5px;
+    margin-top: 5px;
     height: 180px;
     width: 180px;
-    border-radius: 10px;
-    background: #232E2F;
+    background: white;
 }

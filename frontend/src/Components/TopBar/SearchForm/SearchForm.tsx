@@ -5,7 +5,7 @@ function SearchForm() {
     return (
         <form>
             <input type="text" placeholder="Search"/>
-            <button type="submit"><i className="fas fa-search"></i></button>
+            <button type="submit"><i className="fas fa-search"/></button>
         </form>
     );
 }

@@ -9,17 +9,16 @@ class User:
         self.password = ''
         self.name = ''
         self.photoUrl = ''
-        userCatsPhotoUrl = []
+        self.userCatsPhotoUrl = []
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
                           sort_keys=True, indent=4)
 
-    @staticmethod
-    def fromJSON(json_):
-        result = User()
-        for item in json.loads(json_).items():
-            result.__setattr__(item[0], item[1])
+    @classmethod
+    def fromJSON(cls, json_):
+        result = cls()
+        result.__dict__.update(json.loads(json_))
         return result
 
 
@@ -36,9 +35,9 @@ class CatsPhoto:
         return json.dumps(self, default=lambda o: o.__dict__,
                           sort_keys=True, indent=4)
 
-    @staticmethod
-    def fromJSON(json_):
-        result = CatsPhoto()
-        for item in json.loads(json_).items():
-            result.__setattr__(item[0], item[1])
+    @classmethod
+    def fromJSON(cls, json_):
+        result = cls()
+        result.__dict__.update(json.loads(json_))
         return result
+

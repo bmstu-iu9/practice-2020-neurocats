@@ -1,0 +1,76 @@
+This document describes rest api's URL list
+--------------------------------------------
+
+Users:
+ /users (DONE)
+ method:
+    GET: returns all Users
+    POST: requires User's email, password and name fields, creates new User
+
+/users/<int:id> (UNDONE)
+method:
+    GET: returns User's entity with id 
+    UPDATE: requires any User  fields except id and userCatsPhotoUrl
+    DELETE: deletes user with id
+
+/users/<int:id>/cats (UNDONE)
+method:
+    GET: returns list of urls of cats' photos User with id liked 
+
+/users/<int:id>/photo: (UNDONE)
+    method:
+        GET: returns url of user's photo
+        POST: requires photo to be passed with form, sets it as current 
+
+
+
+-----------------------------------------------------------
+CatsPhotos:
+
+
+/cats (UNDONE)
+method:
+    GET: returns all CatsPhoto
+    POST: requires photo passed with form
+
+
+/cats/photo (UNDONE)
+method:
+    GET: returns urls of CatsPhoto
+    
+
+
+/cats/<string:breed> (UNDONE)
+method:
+    GET: returns all CatsPhoto with breed
+
+
+/cats/<string:breed>/photo (UNDONE)
+method:
+    GET: returns urls of CatsPhoto with breed
+
+
+/cats/<int:id> (UNDONE)
+method:
+    GET: returns CatsPhoto with id
+    DELETE: deletes CatsPhoto with id
+
+
+/cats/<int:id>/photo (UNDONE)
+method:
+    GET: returns url of CatsPhoto with id
+    UPDATE: requires photo passed with form
+
+
+/cats/<int:id>/like (UNDONE)
+method:
+        UPDATE: likes CatsPhoto with id by current user
+
+/cats/<intd:id>/unlike (UNDONE)
+method:
+    UPDATE: delete like by current user if exists
+
+---------------------------------------------
+/photo/<int:id>
+method:
+    GET: return photo by id (full url is returned by corresponding urls)

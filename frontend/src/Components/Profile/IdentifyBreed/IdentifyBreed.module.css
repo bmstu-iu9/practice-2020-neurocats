@@ -4,16 +4,17 @@
   font-size: 20px;
   font-weight: 100px;
   width: 68%;
-  height: 160px;
   background: #EFD8D3;
-}
-
-.items {
+  margin-bottom: 3%;
   display: flex;
   flex-flow: row;
+  align-items: center;
 }
-
 .name {
-  margin-top: 7.5%;
+  margin-left: 5%;
+}
+.button{
+  margin-top: 3%;
+  margin-bottom: 3%;
   margin-left: 5%;
 }

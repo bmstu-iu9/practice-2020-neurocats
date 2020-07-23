@@ -2,10 +2,8 @@
     text-decoration: none;
     outline: none;
     display: inline-block;
-    margin: 60px 20px;
     padding: 10px 30px;
     position: relative;
-    border: 2px solid #f8f4ff;
     color:black;
     font-family: "Times New Roman"; 
     transition: .4s;
@@ -25,8 +23,21 @@
     border: 2px solid rgba(0,0,0,0);
     transition: .4s;
   }
-.buttons:hover:after {
-    border-color: #f8f4ff;
+.buttons:hover:after {   
     width: calc(100% - 10px);
     height: calc(100% + 10px);
-  }
+}
+.lightButton:hover:after {
+  border-color: #f8f4ff;
+}
+.lightButton {
+  border: 2px solid #f8f4ff;
+}
+.darkButton:hover:after {
+  border-color: #e6e6e6;
+}
+.darkButton {
+  border: 2px solid #e6e6e6;
+  width: 87%;
+  text-align: center;
+}

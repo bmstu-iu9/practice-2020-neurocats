@@ -1,7 +1,7 @@
 import json
 import os
 
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, abort
 from flask_cors import CORS
 import psycopg2
 import sqlite3
@@ -71,6 +71,51 @@ def all_users():
             return make_response({"Error": str(res)}, 424)
         resp = {'code': 'SUCCESS'}
         return make_response(json.dumps(resp), 201)
+
+
+@app.route('/users/<int:id>', methods=['GET', 'UPDATE', 'DELETE'])
+def one_user(id):
+    if request.method == 'GET':
+        query = 'select * from users where id=' + str(id)
+        user_data = sql_transaction(query)
+        if isinstance(user_data, sqlite3.Error):
+            return make_response({'Error': str(user_data)}, 424)
+        elif user_data:
+            user = User.fromJSON(
+                json.dumps(
+                    arrange(user_data,
+                            ('id', 'email', 'password', 'name', 'photoUrl'))[0]))
+            query = 'select url from posted_cats where posted_by=' + str(id)
+            photos = sql_transaction(query)
+            user.userCatsPhotoUrl.extend([f for t in photos for f in t])
+            return user.toJSON()
+        else:
+            abort(404)
+    elif request.method == 'UPDATE':
+        update = request.get_json()
+        query = 'UPDATE users SET {0}=(?) where id='+str(id)
+        data = list(update.items())
+        try:
+            conn = sqlite3.connect('neurocats.db')
+            cur = conn.cursor()
+            for field in data:
+                cur.execute(query.format(field[0]), (field[1], ))
+            conn.commit()
+        except sqlite3.Error as error:
+            print(error.args)
+            print(str(error))
+            conn.rollback()
+            return make_response({"Error": error.args}, 424)
+        finally:
+            cur.close()
+            conn.close()
+        return make_response({"code": 'SUCCESS'}, 204)
+    else:
+        query = 'delete from users where id={0}'.format(str(id))
+        status = sql_transaction(query)
+        if isinstance(status, sqlite3.Error):
+            return make_response({"Error": str(status)})
+        return make_response({"code": "SUCCESS"}, 204)
 
 
 if __name__ == 'main':

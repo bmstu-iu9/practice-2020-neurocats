@@ -7,7 +7,7 @@ Users:
     GET: returns all Users
     POST: requires User's email, password and name fields, creates new User
 
-/users/<int:id> (UNDONE)
+/users/<int:id> (DONE)
 method:
     GET: returns User's entity with id 
     UPDATE: requires any User  fields except id and userCatsPhotoUrl

@@ -1,7 +1,8 @@
 import json
 import os
 
-from flask import Flask, render_template, request, make_response, abort
+
+from flask import Flask, render_template, request, make_response, jsonify
 from flask_cors import CORS
 import psycopg2
 import sqlite3
@@ -56,8 +57,9 @@ def all_users():
     if request.method == 'GET':
         users = sql_transaction('select * from users')
         if users is not None:
-            return arrange(users,
-                           ('id', 'email', 'password', 'name', 'photoUrl'))
+            return jsonify(map(lambda u: {"id": u[0], "email": u[1],
+                                          "password": u[2], "name": u[3],
+                                          "photoUrl": u[4]}, users))
         elif isinstance(users, sqlite3.Error):
             return make_response({"Error": str(users)}, 424)
 

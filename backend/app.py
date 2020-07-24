@@ -2,7 +2,7 @@ import json
 import os
 
 
-from flask import Flask, render_template, request, make_response, jsonify, abort
+from flask import Flask, render_template, request, make_response, jsonify, abort, send_from_directory
 from hashlib import md5
 from flask_cors import CORS
 import sqlite3
@@ -173,6 +173,9 @@ def user_photo(id):
             file.save(f'{app.config["UPLOAD_FOLDER"]}/{name}')
         return {"url": data}
 
+@app.route('/photo/<path:path>', methods=['GET'])
+def send_photo(path):
+    return send_from_directory('photos', path)
 
 if __name__ == 'main':
     app.run(debug=True)

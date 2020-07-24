@@ -12,7 +12,7 @@ from api import User, CatsPhoto
 template_dir = os.path.abspath('../frontend/public')
 
 ALLOWED_EXTENSIONS = ('png', 'jpg', 'jpeg')
-
+PHOTO_NAME_EXPECTED = 'file'
 
 # initializing flask stuff
 app = Flask(__name__, template_folder=template_dir)
@@ -43,15 +43,6 @@ def sql_transaction(query='', data=()):
             cur.close()
         if conn is not None:
             conn.close()
-
-
-def arrange(data, keys):
-    result = []
-    for item in data:
-        result.append(dict(
-            zip(keys,
-                item)))
-    return dict(enumerate(result))
 
 
 def allowed_file(filename):
@@ -90,16 +81,16 @@ def all_users():
 @app.route('/users/<int:id>', methods=['GET', 'UPDATE', 'DELETE'])
 def one_user(id):
     if request.method == 'GET':
-        query = 'select * from users where id=' + str(id)
-        user_data = sql_transaction(query)
+        query = 'select * from users where id=?'
+        user_data = sql_transaction(query, (id, ))
         if isinstance(user_data, sqlite3.Error):
             return make_response({'Error': str(user_data)}, 424)
         elif user_data:
             user = (lambda u: {"id": u[0], "email": u[1],
                                "password": u[2], "name": u[3],
                                "photoUrl": u[4]})(user_data[0])
-            query = 'select url from posted_cats where posted_by=' + str(id)
-            photos = sql_transaction(query)
+            query = 'select url from posted_cats where posted_by=?'
+            photos = sql_transaction(query, (id, ))
             user['userCatsPhotoUrl'] = ([f for t in photos for f in t])
             return jsonify(user)
         else:
@@ -119,12 +110,8 @@ def one_user(id):
                 cur.execute(query.format(field[0]), (field[1], ))
             conn.commit()
         except sqlite3.Error as error:
-<<<<<<< HEAD
-            conn.rollback()
-=======
             if conn is not None:
                 conn.rollback()
->>>>>>> 0b6739703e70dff580626129fea968892aa1b4ed
             return make_response({"Error": error.args}, 424)
         finally:
             if cur is not None:
@@ -140,61 +127,146 @@ def one_user(id):
         return make_response({"code": "SUCCESS"}, 204)
 
 
-<<<<<<< HEAD
-@app.route('/users/<int:id>/cats/', methods=['GET'])
-=======
 @app.route('/users/<int:id>/cats', methods=['GET'])
->>>>>>> 0b6739703e70dff580626129fea968892aa1b4ed
 def user_cats(id):
-    query = 'select url from posted_cats where posted_by={0}'.format(str(id))
-    cats = sql_transaction(query)
+    query = 'select url from posted_cats where posted_by=?'
+    cats = sql_transaction(query, (id, ))
     if isinstance(cats, sqlite3.Error):
         return make_response({"Error": str(cats)})
-<<<<<<< HEAD
-    return dict(enumerate([c for t in cats for c in t]))
-=======
     return jsonify([c for t in cats for c in t])
->>>>>>> 0b6739703e70dff580626129fea968892aa1b4ed
 
 
 @app.route('/users/<int:id>/photo', methods=['GET', 'POST'])
 def user_photo(id):
     if request.method == 'GET':
-        query = 'select photoUrl from users where id={}'.format(str(id))
-        photo = sql_transaction(query)
+        query = 'select photoUrl from users where id=?'
+        photo = sql_transaction(query, (id, ))
         if isinstance(photo, sqlite3.Error):
             return make_response({"Error": str(photo)})
-<<<<<<< HEAD
-        return photo[0][0]
-    else:
-        pass
-
-=======
         elif photo:
             return photo[0][0]
         else:
             return ''
     else:
-        if 'file' not in request.files:
-            return make_response({"Error: ": 'No file field has found'}, 400)
-        file = request.files['file']
+        if PHOTO_NAME_EXPECTED not in request.files:
+            return make_response({"Error: ":
+                                  f'No {PHOTO_NAME_EXPECTED} field has found'},
+                                 400)
+        file = request.files[PHOTO_NAME_EXPECTED]
         if not file.filename or not allowed_file(file.filename):
             return make_response({"Error: ": 'Incorrect filename'}, 400)
         name = md5(file.filename.encode()).hexdigest()
         name += os.path.splitext(file.filename)[1].strip().lower()
-        query = 'update users set photoUrl = ? where id={0}'.format(str(id))
+        query = 'update users set photoUrl = ? where id=?'
         data = os.path.join('/photo/', name)
-        res = sql_transaction(query, (data, ))
+        res = sql_transaction(query, (data, id))
         if isinstance(res, sqlite3.Error):
             return make_response({"Error": str(res)}, 424)
         if not os.path.isfile(f'{app.config["UPLOAD_FOLDER"]}/{name}'):
             file.save(f'{app.config["UPLOAD_FOLDER"]}/{name}')
-        return {"url": data}
+        return {'code': 'SUCCESS', 'url': data}
+
 
 @app.route('/photo/<path:path>', methods=['GET'])
 def send_photo(path):
     return send_from_directory('photos', path)
->>>>>>> 0b6739703e70dff580626129fea968892aa1b4ed
+
+
+@app.route('/cats', methods=['GET', 'POST'])
+def cats():
+    if request.method == 'GET':
+        query = 'select * from cats_photos'
+        photos = sql_transaction(query)
+        if isinstance(photos, sqlite3.Error):
+            return make_response({"Error": str(photos)}, 500)
+        return jsonify(list(map(lambda p: {'id': p[0], 'photoUrl': p[1],
+                                           'breed': p[2], 'owner': p[3]},
+                                photos)))
+    else:
+        pass
+
+
+@app.route('/cats/photo', methods=['GET'])
+def cats_url():
+    query = 'select photoUrl from cats_photos'
+    urls = sql_transaction(query)
+    if isinstance(urls, sqlite3.Error):
+        return make_response({"Error": str(urls)}, 500)
+    return jsonify([t[0] for t in urls])
+
+
+@app.route('/cats/<string:breed>', methods=['GET'])
+def cats_photo_by_breed(breed):
+    query = 'select * from cats_photos where breed=?'
+    photos = sql_transaction(query, (breed, ))
+    if isinstance(photos, sqlite3.Error):
+        return make_response({"Error": str(photos)}, 500)
+    return jsonify(list(map(lambda p: {'id': p[0], 'photoUrl': p[1],
+                                       'breed': p[2], 'owner': p[3]},
+                            photos)))
+
+
+@app.route('/cats/<string:breed>/photo', methods=['GET'])
+def cats_url_by_breed(breed):
+    query = 'select photoUrl from cats_photos where breed=?'
+    urls = sql_transaction(query, (breed, ))
+    if isinstance(urls, sqlite3.Error):
+        return make_response({"Error": str(urls)}, 500)
+    return jsonify([t[0] for t in urls])
+
+
+@app.route('/cats/<int:id>', methods=['GET', 'DELETE'])
+def cats_photo_by_id(id):
+    if request.method == 'GET':
+        query = 'select * from cats_photos where id=?'
+        photo = sql_transaction(query, (id,))
+        if isinstance(photo, sqlite3.Error):
+            return make_response({"Error": str(photo)}, 500)
+        elif photo:
+            return jsonify((lambda p: {'id': p[0], 'photoUrl': p[1],
+                                       'breed': p[2], 'owner': p[3]})
+                           (photo[0]))
+        else:
+            abort(404)
+    else:
+        query = 'delete from cats_photos where id=?'
+        photo = sql_transaction(query, (id,))
+        if isinstance(photo, sqlite3.Error):
+            return make_response({"Error": str(photo)}, 424)
+        else:
+            return make_response({"code": 'SUCCESS'}, 204)
+
+
+@app.route('/cats/<int:id>/photo', methods=['GET', 'UPDATE'])
+def cats_url_by_id(id):
+    if request.method == 'GET':
+        query = 'select photoUrl from cats_photos where id=?'
+        url = sql_transaction(query, (id,))
+        if isinstance(url, sqlite3.Error):
+            return make_response({"Error": str(url)}, 500)
+        elif url:
+            return url[0][0]
+        else:
+            abort(404)
+    else:
+        if PHOTO_NAME_EXPECTED not in request.files:
+            return make_response({"Error: ":
+                                  f'No {PHOTO_NAME_EXPECTED} field has found'},
+                                 400)
+        file = request.files[PHOTO_NAME_EXPECTED]
+        if not file.filename or not allowed_file(file.filename):
+            return make_response({"Error: ": 'Incorrect filename'}, 400)
+        name = md5(file.filename.encode()).hexdigest()
+        name += os.path.splitext(file.filename)[1].strip().lower()
+        query = 'update cats_photos set photoUrl = ? where id=?'
+        data = os.path.join('/photo/', name)
+        res = sql_transaction(query, (data, id))
+        if isinstance(res, sqlite3.Error):
+            return make_response({"Error": str(res)}, 424)
+        if not os.path.isfile(f'{app.config["UPLOAD_FOLDER"]}/{name}'):
+            file.save(f'{app.config["UPLOAD_FOLDER"]}/{name}')
+        return {'code': 'SUCCESS', 'url': data}
+
 
 if __name__ == 'main':
     app.run(debug=True)

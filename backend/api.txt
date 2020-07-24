@@ -23,7 +23,7 @@ method:
         POST: requires photo to be passed with form, sets it as current, returns new url
 
 
-/photo/<string:id> (UNDONE)
+/photo/<path:path> (DONE)
 method:
     GET: return photo by id (full url is returned by corresponding methods)
 
@@ -34,33 +34,33 @@ CatsPhotos:
 
 /cats (UNDONE)
 method:
-    GET: returns all CatsPhoto
-    POST: requires photo passed with form
+    GET: returns all CatsPhoto (DONE)
+    POST: requires photo passed with form (UNDONE)
 
 
-/cats/photo (UNDONE)
+/cats/photo (DONE)
 method:
-    GET: returns urls of CatsPhoto
+    GET: returns urls of CatsPhotos
     
 
 
-/cats/<string:breed> (UNDONE)
+/cats/<string:breed> (DONE)
 method:
     GET: returns all CatsPhoto with breed
 
 
-/cats/<string:breed>/photo (UNDONE)
+/cats/<string:breed>/photo (DONE)
 method:
     GET: returns urls of CatsPhoto with breed
 
 
-/cats/<int:id> (UNDONE)
+/cats/<int:id> (DONE)
 method:
     GET: returns CatsPhoto with id
     DELETE: deletes CatsPhoto with id
 
 
-/cats/<int:id>/photo (UNDONE)
+/cats/<int:id>/photo (DONE)
 method:
     GET: returns url of CatsPhoto with id
     UPDATE: requires photo passed with form

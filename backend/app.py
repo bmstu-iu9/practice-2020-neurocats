@@ -51,7 +51,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/users', methods=['GET', 'POST'])
+@app.route('/users/', methods=['GET', 'POST'])
 def all_users():
     if request.method == 'GET':
         users = sql_transaction('select * from users')
@@ -102,8 +102,6 @@ def one_user(id):
                 cur.execute(query.format(field[0]), (field[1], ))
             conn.commit()
         except sqlite3.Error as error:
-            print(error.args)
-            print(str(error))
             conn.rollback()
             return make_response({"Error": error.args}, 424)
         finally:
@@ -116,6 +114,27 @@ def one_user(id):
         if isinstance(status, sqlite3.Error):
             return make_response({"Error": str(status)})
         return make_response({"code": "SUCCESS"}, 204)
+
+
+@app.route('/users/<int:id>/cats/', methods=['GET'])
+def user_cats(id):
+    query = 'select url from posted_cats where posted_by={0}'.format(str(id))
+    cats = sql_transaction(query)
+    if isinstance(cats, sqlite3.Error):
+        return make_response({"Error": str(cats)})
+    return dict(enumerate([c for t in cats for c in t]))
+
+
+@app.route('/users/<int:id>/photo', methods=['GET', 'POST'])
+def user_photo(id):
+    if request.method == 'GET':
+        query = 'select photoUrl from users where id={}'.format(str(id))
+        photo = sql_transaction(query)
+        if isinstance(photo, sqlite3.Error):
+            return make_response({"Error": str(photo)})
+        return photo[0][0]
+    else:
+        pass
 
 
 if __name__ == 'main':

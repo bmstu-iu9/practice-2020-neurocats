@@ -13,14 +13,14 @@ method:
     UPDATE: requires any User  fields except id and userCatsPhotoUrl
     DELETE: deletes user with id
 
-/users/<int:id>/cats (UNDONE)
+/users/<int:id>/cats (DONE)
 method:
     GET: returns list of urls of cats' photos User with id liked 
 
 /users/<int:id>/photo: (UNDONE)
     method:
         GET: returns url of user's photo
-        POST: requires photo to be passed with form, sets it as current 
+        POST: requires photo to be passed with form, sets it as current, returns new url
 
 
 

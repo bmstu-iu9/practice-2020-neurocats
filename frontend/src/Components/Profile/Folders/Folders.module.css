@@ -2,12 +2,16 @@
   display: flex;
   flex-flow: row;
   margin-left: 3.5%;
+  align-items: center;
 }
 .blocks {
   width: 68%;
-  height: 210px;
+  height: 68%;
   background: #EFD8D3;
 }
 .name {
   margin-left: 5%;
+}
+.button{
+  margin-left: 4.5%;
 }

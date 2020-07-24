@@ -1,16 +1,15 @@
-form {
+.content {
   position: relative;
-  width: 310%;
-  background: #f8f4ff;
+  background: #f2f1f0;
 }
-input, button {
+.SearchForm, button{
   border: none;
   outline: none;
   background: transparent;
 }
-input {
-  width: 92%;
+.SearchForm {
   height: 42px;
+  width: 94%;
   padding-left: 15px;
   font-size:25px ; 
   font-weight:100px;
@@ -22,7 +21,4 @@ button {
   top: 0;
   right: 0;
   cursor: pointer;
-}
-.fas.fa-search{
-  color: #ccc;
 }

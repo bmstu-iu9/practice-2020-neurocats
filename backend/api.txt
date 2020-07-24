@@ -17,11 +17,15 @@ method:
 method:
     GET: returns list of urls of cats' photos User with id liked 
 
-/users/<int:id>/photo: (UNDONE)
+/users/<int:id>/photo: (DONE)
     method:
         GET: returns url of user's photo
         POST: requires photo to be passed with form, sets it as current, returns new url
 
+
+/photo/<string:id> (UNDONE)
+method:
+    GET: return photo by id (full url is returned by corresponding methods)
 
 
 -----------------------------------------------------------
@@ -66,11 +70,8 @@ method:
 method:
         UPDATE: likes CatsPhoto with id by current user
 
-/cats/<intd:id>/unlike (UNDONE)
+/cats/<int:id>/unlike (UNDONE)
 method:
     UPDATE: delete like by current user if exists
 
 ---------------------------------------------
-/photo/<int:id>
-method:
-    GET: return photo by id (full url is returned by corresponding urls)

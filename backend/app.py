@@ -7,7 +7,7 @@ from hashlib import md5
 from flask_cors import CORS
 import sqlite3
 
-from api import User, CatsPhoto
+from api import User
 
 template_dir = os.path.abspath('../frontend/public')
 
@@ -18,7 +18,8 @@ PHOTO_NAME_EXPECTED = 'file'
 app = Flask(__name__, template_folder=template_dir)
 app.config['UPLOAD_FOLDER'] = 'photos'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-CORS(app)
+cors = CORS(app, resources={r"/*": {"origins": "localhost:3000"},
+                            r"/": {"origins": "*"}})
 
 
 def sql_transaction(query='', data=()):
@@ -55,7 +56,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/users/', methods=['GET', 'POST'])
+@app.route('/users', methods=['GET', 'POST'])
 def all_users():
     if request.method == 'GET':
         users = sql_transaction('select * from users')
@@ -183,7 +184,35 @@ def cats():
                                            'breed': p[2], 'owner': p[3]},
                                 photos)))
     else:
-        pass
+        if PHOTO_NAME_EXPECTED not in request.files:
+            return make_response({"Error: ":
+                                  f'No {PHOTO_NAME_EXPECTED} field has found'},
+                                 400)
+        try:
+            user = json.loads(request.form['json'])
+        except KeyError as error:
+            user = request.get_json()
+            if user is None:
+                return make_response({"Error": str(error)}, 400)
+        if 'id' not in user:
+            return make_response({"Error": "No user id passed"}, 400)
+        file = request.files[PHOTO_NAME_EXPECTED]
+        if not file.filename or not allowed_file(file.filename):
+            return make_response({"Error: ": 'Incorrect filename'}, 400)
+        name = md5(file.filename.encode()).hexdigest()
+        name += os.path.splitext(file.filename)[1].strip().lower()
+        query = 'insert into cats_photos(photoUrl, breed, owner) values(?, ?, ?)'
+        path = os.path.join('/photo/', name)
+        res = sql_transaction(query, (path, "", user['id']))
+        if isinstance(res, sqlite3.Error):
+            return make_response({"Error": str(res)}, 424)
+        query = 'insert into posted_cats(posted_by, url) values(?, ?)'
+        res = sql_transaction(query, (user['id'], path))
+        if isinstance(res, sqlite3.Error):
+            return make_response({"Error": str(res)}, 424)
+        if not os.path.isfile(f'{app.config["UPLOAD_FOLDER"]}/{name}'):
+            file.save(f'{app.config["UPLOAD_FOLDER"]}/{name}')
+        return {'code': 'SUCCESS', 'url': path}
 
 
 @app.route('/cats/photo', methods=['GET'])
@@ -258,7 +287,7 @@ def cats_url_by_id(id):
             return make_response({"Error: ": 'Incorrect filename'}, 400)
         name = md5(file.filename.encode()).hexdigest()
         name += os.path.splitext(file.filename)[1].strip().lower()
-        query = 'update cats_photos set photoUrl = ? where id=?'
+        query = 'update cats_photos set photoUrl = ? where id= ?'
         data = os.path.join('/photo/', name)
         res = sql_transaction(query, (data, id))
         if isinstance(res, sqlite3.Error):
@@ -266,6 +295,40 @@ def cats_url_by_id(id):
         if not os.path.isfile(f'{app.config["UPLOAD_FOLDER"]}/{name}'):
             file.save(f'{app.config["UPLOAD_FOLDER"]}/{name}')
         return {'code': 'SUCCESS', 'url': data}
+
+
+@app.route('/cats/<int:id>/like', methods=['UPDATE'])
+def like_cat(id):
+    user = request.get_json()
+    if 'id' not in user:
+        return make_response({"Error": "No user id passed"}, 400)
+    query = 'select photo from likes where by_user=?'
+    liked = sql_transaction(query, (user['id'], ))
+    if isinstance(liked, sqlite3.Error):
+        return make_response({"Error: ": str(liked)}, 424)
+    elif not liked or (id, ) not in liked:
+        test1 = 'select * from users where id=?'
+        test2 = 'select * from cats_photos where id=?'
+        if not sql_transaction(test1, (user['id'], )) or \
+           not sql_transaction(test2, (id, )):
+            return make_response({"Error": "Invalid id"}, 400)
+        query = 'insert into likes(photo, by_user) values(?, ?)'
+        res = sql_transaction(query, (id, user['id']))
+        if isinstance(res, sqlite3.Error):
+            return make_response({"Error": str(res)}, 424)
+    return make_response({'code': 'SUCCESS'})
+
+
+@app.route('/cats/<int:id>/unlike', methods=['UPDATE'])
+def unlike_cat(id):
+    user = request.get_json()
+    if 'id' not in user:
+        return make_response({"Error": "No user id passed"}, 400)
+    query = 'delete from likes where photo=? and by_user=?'
+    res = sql_transaction(query, (id, user['id']))
+    if isinstance(res, sqlite3.Error):
+        return make_response({"Error": str(res)}, 424)
+    return make_response({'code': 'SUCCESS'})
 
 
 if __name__ == 'main':

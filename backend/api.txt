@@ -32,10 +32,10 @@ method:
 CatsPhotos:
 
 
-/cats (UNDONE)
+/cats (DONE)
 method:
-    GET: returns all CatsPhoto (DONE)
-    POST: requires photo passed with form (UNDONE)
+    GET: returns all CatsPhoto
+    POST: requires photo passed with form
 
 
 /cats/photo (DONE)
@@ -66,11 +66,11 @@ method:
     UPDATE: requires photo passed with form
 
 
-/cats/<int:id>/like (UNDONE)
+/cats/<int:id>/like (DONE)
 method:
         UPDATE: likes CatsPhoto with id by current user
 
-/cats/<int:id>/unlike (UNDONE)
+/cats/<int:id>/unlike (DONE)
 method:
     UPDATE: delete like by current user if exists
 

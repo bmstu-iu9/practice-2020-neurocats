@@ -8,10 +8,10 @@ photos of cats and identify their breed
 using an embedded neural network.
  
 Team members:
-Yulia Hrobak
-Farida Bazartinova
-Ilya Getikov
-German Kulchitsky
+Yulia Hrobak, 
+Farida Bazartinova, 
+Ilya Getikov, 
+German Kulchitsky, 
 Victor Florya
 
 Чтобы запустить локально приложение необходимо:

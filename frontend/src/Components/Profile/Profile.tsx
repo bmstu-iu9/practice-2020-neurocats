@@ -19,7 +19,7 @@ function Profile() {
     useEffect(() => {
         (async () => {
             try {
-                const {data} = await Axios.get(`http://localhost:5000/users/${params.id}`);
+                const {data} = await Axios.get(`/users/${params.id}`);
                 setUser(data)
             } catch (e) {
                 if (e.isAxiosError) {

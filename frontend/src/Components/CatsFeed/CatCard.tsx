@@ -16,7 +16,7 @@ function CatCard({cat}: Props) {
     useEffect(() => {
         (async () => {
             try {
-                const {data} = await Axios.get(`http://localhost:5000/users/${cat?.owner}`);
+                const {data} = await Axios.get(`/users/${cat?.owner}`);
                 console.log(data)
                 setOwner(data);
             } catch (e) {

@@ -7,7 +7,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "pretty-quick": "pretty-quick --pattern \"{src,public}/**/*\""
+    "pretty-quick": "pretty-quick --pattern \"{src,public}/**/*\"",
+    "deploy": "yarn build && node scripts/deploy.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -27,6 +28,9 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
+    "fs-extra": "^9.0.1",
+    "ncp": "^2.0.0",
+    "node": "^14.5.0",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
     "react-scripts": "3.4.1",

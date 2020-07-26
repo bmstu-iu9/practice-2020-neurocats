@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import "./App.css";
-import {Redirect, Route, Router, Switch} from "react-router-dom";
-import { createBrowserHistory } from 'history';
+import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import {UserProvider} from "../context";
 import {User} from "../types";
 import MainPage from "./SignInSignUp/MainPage";
@@ -17,15 +16,13 @@ function App({user}: Props) {
   return (
       <div className="App">
         <UserProvider value={user}>
-          <Router history={createBrowserHistory()}>
+          <BrowserRouter>
             <Switch>
               <Route path={"/404"} exact><NotFound/></Route>
               {authed ? <MainApp/> : <MainPage/>}
-              {/*<Route path={"/signIn"} exact><MainPage/></Route>*/}
-              {/*<Route path={"/signUp"} exact><MainPage/></Route>*/}
               <Redirect to={"/404"}/>
             </Switch>
-          </Router>
+          </BrowserRouter>
         </UserProvider>
       </div>
   );

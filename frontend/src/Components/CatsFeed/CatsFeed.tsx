@@ -10,7 +10,7 @@ function CatsFeed() {
     useEffect(() => {
         (async () => {
             try {
-                const res = await Axios.get<CatsPhoto[]>("http://localhost:5000/cats");
+                const res = await Axios.get<CatsPhoto[]>("/cats");
                 console.log(res);
                 setCats(res.data.slice(0, 15));
             } catch (e) {

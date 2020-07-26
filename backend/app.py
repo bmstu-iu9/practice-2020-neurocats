@@ -53,8 +53,27 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET'])
 def index():
-    return ''
+    return send_from_directory('static', 'index.html')
 
+@app.route('/<path:path>', methods=['GET'])
+def static_files(path):
+    return send_from_directory('static', path)
+
+@app.route('/static/css/<path:path>', methods=['GET'])
+def static_css_files(path):
+    return send_from_directory('static/static/css', path)
+
+@app.route('/static/js/<path:path>', methods=['GET'])
+def static_js_files(path):
+    return send_from_directory('static/static/js', path)
+
+@app.route('/static/media/<path:path>', methods=['GET'])
+def static_media_files(path):
+    return send_from_directory('static/static/media', path)
+
+@app.route('/logos/<path:path>', methods=['GET'])
+def static_logos_files(path):
+    return send_from_directory('static/logos', path)
 
 @app.route('/users', methods=['GET', 'POST'])
 def all_users():

@@ -28,6 +28,10 @@ method:
     GET: return photo by id (full url is returned by corresponding methods)
 
 
+/users/<int:id>/folder (DONE)
+methods:
+    GET: return list of breeds for user with id
+
 -----------------------------------------------------------
 CatsPhotos:
 
@@ -37,6 +41,10 @@ method:
     GET: returns all CatsPhoto
     POST: requires photo passed with form
 
+
+/cats/<int:start>/list/<int:length> (DONE)
+methods:
+    GET: return sequence of photos from id start to id start+length-1
 
 /cats/photo (DONE)
 method:
@@ -75,3 +83,4 @@ method:
     UPDATE: delete like by current user if exists
 
 ---------------------------------------------
+

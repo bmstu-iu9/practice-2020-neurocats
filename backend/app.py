@@ -2,7 +2,7 @@ import json
 import os
 
 
-from flask import Flask, render_template, request, make_response, jsonify, abort, send_from_directory
+from flask import Flask, request, make_response, jsonify, abort, send_from_directory
 from hashlib import md5
 from flask_cors import CORS
 import sqlite3
@@ -15,7 +15,7 @@ ALLOWED_EXTENSIONS = ('png', 'jpg', 'jpeg')
 PHOTO_NAME_EXPECTED = 'file'
 
 # initializing flask stuff
-app = Flask(__name__, template_folder=template_dir)
+app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'photos'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 cors = CORS(app, resources={r"/*": {"origins": "localhost:3000"},
@@ -53,7 +53,7 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    return ''
 
 
 @app.route('/users', methods=['GET', 'POST'])
@@ -173,15 +173,27 @@ def send_photo(path):
     return send_from_directory('photos', path)
 
 
+@app.route('/users/<int:id>/folder', methods=['GET'])
+def get_breeds_for_user(id):
+    query = 'select breed from cats_photos where owner=?'
+    breeds = sql_transaction(query, (id, ))
+    if isinstance(breeds, sqlite3.Error):
+        return make_response({"Error": str(breeds)}, 424)
+    breeds = [t[0] for t in breeds]
+    return jsonify(list(set(breeds)))
+
+
 @app.route('/cats', methods=['GET', 'POST'])
 def cats():
     if request.method == 'GET':
         query = 'select * from cats_photos'
         photos = sql_transaction(query)
+        query = 'select by_user from likes where photo=?'
         if isinstance(photos, sqlite3.Error):
             return make_response({"Error": str(photos)}, 500)
         return jsonify(list(map(lambda p: {'id': p[0], 'photoUrl': p[1],
-                                           'breed': p[2], 'owner': p[3]},
+                                           'breed': p[2], 'owner': p[3],
+                                           'likes': [t[0] for t in sql_transaction(query, (p[0], ))]},
                                 photos)))
     else:
         if PHOTO_NAME_EXPECTED not in request.files:
@@ -215,6 +227,14 @@ def cats():
         return {'code': 'SUCCESS', 'url': path}
 
 
+@app.route('/cats/<int:start>/list/<int:length>', methods=['GET'])
+def list_of_photos(start, length):
+    query = 'select photoUrl from cats_photos where id>=? limit ?'
+    urls = sql_transaction(query, (start, length))
+    urls = [t[0] for t in urls]
+    return jsonify(urls)
+
+
 @app.route('/cats/photo', methods=['GET'])
 def cats_url():
     query = 'select photoUrl from cats_photos'
@@ -230,8 +250,10 @@ def cats_photo_by_breed(breed):
     photos = sql_transaction(query, (breed, ))
     if isinstance(photos, sqlite3.Error):
         return make_response({"Error": str(photos)}, 500)
+    query = 'select by_user from likes where photo=?'
     return jsonify(list(map(lambda p: {'id': p[0], 'photoUrl': p[1],
-                                       'breed': p[2], 'owner': p[3]},
+                                       'breed': p[2], 'owner': p[3],
+                                       'likes': [t[0] for t in sql_transaction(query, (p[0], ))]},
                             photos)))
 
 
@@ -252,8 +274,10 @@ def cats_photo_by_id(id):
         if isinstance(photo, sqlite3.Error):
             return make_response({"Error": str(photo)}, 500)
         elif photo:
+            query = 'select by_user from likes where photo=?'
             return jsonify((lambda p: {'id': p[0], 'photoUrl': p[1],
-                                       'breed': p[2], 'owner': p[3]})
+                                       'breed': p[2], 'owner': p[3],
+                                       'likes': [t[0] for t in sql_transaction(query, (p[0], ))]})
                            (photo[0]))
         else:
             abort(404)

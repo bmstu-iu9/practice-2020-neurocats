@@ -4,6 +4,7 @@ import logo from "../../logo.svg"
 import SignIn from "./SignIn/SignIn";
 import { Route } from "react-router-dom";
 import SignUp from "./SignUp/SignUp";
+import Hello from "../Hello/Hello";
 
 
 function MainPage(props: any) {
@@ -16,7 +17,7 @@ function MainPage(props: any) {
             
             <Route path='/signIn' render = {() => <SignIn/>}/>
             <Route path='/signUp' render = {() => <SignUp/>}/>
-          
+            <Route path='/hello' render = {() => <Hello/>}/>
         </div>
     );
 }

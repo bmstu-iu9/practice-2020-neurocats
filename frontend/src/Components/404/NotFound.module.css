@@ -1,0 +1,31 @@
+.content {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+.block{
+    justify-content: center;
+    display: flex;
+}
+.number {
+  color: #f2f1f0;
+  font-family: "Times New Roman"; 
+  font-size:450px ; 
+  font-weight:100px;
+}
+.item{
+  color:black;
+  font-family: "Times New Roman"; 
+  font-size:30px ; 
+  font-weight:100px;
+}
+.photo {
+  margin-top: 10%;
+  width: 150px;
+  height: auto;
+}

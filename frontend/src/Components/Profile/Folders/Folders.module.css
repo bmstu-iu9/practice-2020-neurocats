@@ -4,13 +4,20 @@
   margin-left: 3.5%;
   align-items: center;
 }
-.blocks {
+.blocksPink {
   width: 68%;
   height: 68%;
+}
+.blocksPink{
   background: #EFD8D3;
 }
 .name {
   margin-left: 5%;
+  color: black;
+  font-family: "Times New Roman"; 
+  font-size: 20px ; 
+  font-weight: 100px;
+  text-decoration: none;
 }
 .button{
   margin-left: 4.5%;

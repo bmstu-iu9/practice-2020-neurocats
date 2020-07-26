@@ -1,24 +1,39 @@
-.content {
-  position: relative;
-  background: #f2f1f0;
+.container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 42px;
+  background: #f8f4ff;
 }
-.SearchForm, button{
+
+.input {
+  height: 100%;
+  width: calc(100% - 57px);
+  padding: 0;
+  margin-left: 15px;
+
   border: none;
+  background: none;
+
+  font-size:25px ;
+  font-weight: 100;
+}
+
+.input:focus, textarea:focus, input:focus{
   outline: none;
-  background: transparent;
 }
-.SearchForm {
-  height: 42px;
-  width: 94%;
-  padding-left: 15px;
-  font-size:25px ; 
-  font-weight:100px;
-}
-button {
-  height: 42px;
+
+.btn {
+  height: 100%;
   width: 42px;
-  position: absolute;
-  top: 0;
-  right: 0;
+  padding: 0;
+  border: none;
+  background: none;
   cursor: pointer;
+}
+
+.btn > i {
+  color: #ccc;
 }

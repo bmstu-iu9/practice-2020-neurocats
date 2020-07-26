@@ -1,35 +1,70 @@
-import React, { useState } from "react";
+import React, {useCallback, useState} from "react";
 import classes from "./UserInfo.module.css"
 
-function UserInfo(props: any) {
-  const [editState, setEditState] = useState(false);
-  const [name, setName] = useState('');
-  let changeName = () => {
-    if (!(name === '')){
-      props.dispatch({type: 'UPDATE_NAME', username: name});
+interface Props {
+    id: number,
+    name: string,
+    photoUrl: string,
+}
+
+function UserInfo({id, name, photoUrl}: Props) {
+    const [editState, setEditState] = useState(false);
+    const [newName, setNewName] = useState('');
+
+    let changeName = () => {
+        if (!(name === '')){
+            //TODO
+        }
     }
-  }
-  return (
-    <div className={classes.UserInfo}>
-      <img src={props.state.user.photoUrl} alt="ava" />
-      <div className={classes.name}>@{props.state.user.name}</div>
-      <div className={classes.edit}>
-      { 
-        editState ?
-          <div className={classes.block}>
-            <button className={classes.button1} 
-            onClick={() => { setEditState(false); changeName(); }}>
-              <div className={classes.save}>Save</div></button>
-            <input type="text" className={classes.nameChangeField} onChange={e => setName(e.target.value)}/>
-          </div>
-          :
-          <div className={classes.block}>
-            <button className={classes.button2} onClick={() => { setEditState(true) }}><i className="fa fa-edit"/></button>
-          </div>
-      }
-      </div>
-    </div>
-  );
+
+    const changeAvatar = useCallback(() => {
+        const input: HTMLInputElement = document.createElement("input");
+        input.type = "file";
+        input.style.display = "none";
+        input.accept = "image/*";
+        document.body.appendChild(input);
+
+        input.click();
+        input.onchange = async () => {
+            const file = input.files?.item(0);
+            if (!file) return;
+            const blob = new Blob([file], {type: file.type});
+            // await userProvider.uploadPhoto(id, file.name, blob);
+            document.body.removeChild(input);
+        };
+    }, [id]);
+
+    return (
+        <div className={classes.UserInfo}>
+            <div className={classes.ava}>
+                <img
+                    className={`${photoUrl ? "" : classes.empty}`}
+                    src={`http://localhost:5000${photoUrl}`} alt={"ava"}
+                />
+                <div className={classes.avaEdit} onClick={changeAvatar}>
+                    <span>Изменить</span>
+                </div>
+            </div>
+            <div className={classes.block}>
+                {editState ?
+                    <>
+                        <input type="text" className={`${classes.nameChangeField} ${classes.edit}`} value={name} onChange={e => setNewName(e.target.value)}/>
+                        <button className={classes.button1}
+                                onClick={() => { setEditState(false); changeName(); }}>
+                            <div className={classes.save}>Save</div>
+                        </button>
+                    </>
+                    :
+                    <>
+                        <div className={classes.name}>@{name}</div>
+                        <button className={classes.button2} onClick={() => { setEditState(true) }}>
+                            <i className="fa fa-edit"/>
+                        </button>
+                    </>
+                }
+            </div>
+        </div>
+    );
 }
 
 export default UserInfo;

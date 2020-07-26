@@ -1,29 +1,33 @@
-import React from "react";
+import React, {useState} from "react";
 import "./App.css";
-import TopBar from "./TopBar/TopBar";
-import CatsFeed from "./CatsFeed/CatsFeed";
-import { BrowserRouter, Route } from "react-router-dom";
-import Profile from "./Profile/Profile";
-import FolderPage from "./FolderPage/FolderPage";
+import {Redirect, Route, Router, Switch} from "react-router-dom";
+import { createBrowserHistory } from 'history';
+import {UserProvider} from "../context";
+import {User} from "../types";
 import MainPage from "./SignInSignUp/MainPage";
+import NotFound from "./404/404";
+import MainApp from "./MainApp";
 
+interface Props {
+  user: User;
+}
 
-function App(props: any) {
+function App({user}: Props) {
+  const [authed] = useState(true);
   return (
-    <BrowserRouter>
       <div className="App">
-        <Route path='/home' render = {() => <TopBar/>}/>
-        <Route path='/folderName' render = {() => <TopBar/>}/>
-        <Route path='/profile' render = {() => <TopBar/>}/>
-        <div className='appContent'>
-          <Route path='/signIn' render = {() => <MainPage/>}/>
-          <Route path='/signUp' render = {() => <MainPage/>}/>
-          <Route path='/home' render = {() => <CatsFeed/>}/>
-          <Route path='/folderName' render = {() => <FolderPage/>}/>
-          <Route path='/profile' render = {() => <Profile state={props.state} dispatch={props.dispatch}/>}/>
-        </div>
+        <UserProvider value={user}>
+          <Router history={createBrowserHistory()}>
+            <Switch>
+              <Route path={"/404"} exact><NotFound/></Route>
+              {authed ? <MainApp/> : <MainPage/>}
+              {/*<Route path={"/signIn"} exact><MainPage/></Route>*/}
+              {/*<Route path={"/signUp"} exact><MainPage/></Route>*/}
+              <Redirect to={"/404"}/>
+            </Switch>
+          </Router>
+        </UserProvider>
       </div>
-    </BrowserRouter>
   );
 }
 

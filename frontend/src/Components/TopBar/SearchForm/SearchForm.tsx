@@ -1,13 +1,18 @@
 import React from "react";
-import './SearchForm.module.css'
 import classes from "./SearchForm.module.css";
 
-function SearchForm() {
+interface Props {
+    className?: string
+}
+
+function SearchForm({className}: Props) {
     return (
-        <form className={classes.content}>
-            <input type="text" placeholder="Search" className={classes.SearchForm}/>
-            <button type="submit"><i className="fas fa-search"/></button>
-        </form>
+        <div className={`${classes.container} ${className}`}>
+            <input className={classes.input} type="text" placeholder="Search"/>
+            <button className={classes.btn}>
+                <i className="fas fa-search"/>
+            </button>
+        </div>
     );
 }
 

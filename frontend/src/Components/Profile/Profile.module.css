@@ -2,13 +2,12 @@
   height: 300px;
 }
 .profile {
-  margin-top: 2%;
-  margin-left: 21%;
-  font-family: "Times New Roman";
+  padding: 0 20%;
+  font-family: "Times New Roman", sans-serif;
   font-size: 20px ; 
-  font-weight: 100px;
+  font-weight: 100;
 }
 
-.item {
-  padding-top: 1%;
+.item:not(:first-of-type) {
+  padding-top: 10px;
 }

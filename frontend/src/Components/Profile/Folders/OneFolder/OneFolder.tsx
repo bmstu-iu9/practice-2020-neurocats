@@ -1,9 +1,13 @@
 import React from "react";
 import classes from "./OneFolder.module.css"
 import PhotoCard from "./PhotoCard/PhotoCard";
-import { NavLink } from "react-router-dom";
+import {Link} from "react-router-dom";
 
-function OneFolder() {
+interface Props {
+    id: number,
+}
+
+function OneFolder({id}: Props) {
     const cards = [];
     for (let i = 0; i < 3; i++) {
         cards.push("https://www.sunhome.ru/i/foto/211/bolshaya-panda.orig.jpg");
@@ -17,14 +21,14 @@ function OneFolder() {
     const row2 = cards.slice(2);
     return (
         <div className={classes.OneFile}>
-            <NavLink to='/folderName' className={classes.files}>
+            <Link to={`/${id}/folder`} className={classes.files}>
                 <div className={classes.filesRow}>
-                    {row1.map(e => <PhotoCard url={e}/>)}
+                    {row1.map((e, i) => <PhotoCard key={i} url={e}/>)}
                 </div>
                 <div className={classes.filesRow}>
-                    {row2.map(e => <PhotoCard url={e}/>)}
+                    {row2.map((e, i) => <PhotoCard key={i} url={e}/>)}
                 </div>
-            </NavLink>
+            </Link>
             <div className={classes.name}>Name</div>
         </div>
     );

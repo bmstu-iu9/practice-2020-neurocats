@@ -1,0 +1,82 @@
+.emptyCard {
+    margin-right: 5px;
+    margin-top: 5px;
+    height: 180px;
+    width: 180px;
+    background: white;
+}
+
+.container {
+    position: relative;
+    margin-right: 5px;
+    margin-top: 5px;
+    height: 180px;
+    width: 180px;
+}
+
+.cat {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.emptyCat {
+    height: 100%;
+    width: 100%;
+    background: gray;
+}
+
+.cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: black;
+    opacity: 50%;
+}
+
+.breed {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 90px;
+    height: 18px;
+    background: white;
+}
+
+.like {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+}
+
+.owner {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: white;
+
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.container > .breed .cover .like .owner {
+}
+
+.container:hover > .cover .breed .like .owner {
+}
+
+.ava {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.empty {
+    background: gray;
+}

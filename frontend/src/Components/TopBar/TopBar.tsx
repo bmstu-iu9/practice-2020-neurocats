@@ -3,26 +3,38 @@ import classes from "./TopBar.module.css";
 import logo from "../../logo.svg";
 import { NavLink } from 'react-router-dom';
 import SearchForm from "./SearchForm/SearchForm";
+import {useUser} from "../../context";
 
 function TopBar() {
+    const user = useUser();
+
     return (
-        <div className = { classes.TopBar } >
-            <div>
-                <img src={logo} alt="logo"/>
-            </div>
-            <div>
-                <NavLink to='/home' className={classes.name}>Home</NavLink>
-            </div>
-            <div className={classes.item}>
-                <SearchForm/>
-            </div>
-            <div>
-                <NavLink to='/profile' className={classes.name}>Profile</NavLink>
-            </div>
-            <div>
-                <img className={classes.ava} src="https://www.sunhome.ru/i/foto/211/bolshaya-panda.orig.jpg" alt="ava"/>
-            </div>
-      </div>
+        <ul className = { classes.TopBar } >
+            <li>
+                <NavLink
+                    to='/'
+                    className={classes.item}
+                    activeClassName={classes.active}
+                >
+                    <img src={logo} className={classes.img} alt="logo"/>
+                    <span>Neurocats</span>
+                </NavLink>
+            </li>
+            <li className={classes.search}>
+                <SearchForm />
+            </li>
+            <li>
+                <NavLink
+                    to={`/${user.id}`}
+                    className={classes.item}
+                    activeClassName={classes.active}>
+                    <span>{user.name}</span>
+                    <img
+                        className={`${classes.img} ${classes.ava} ${user.photoUrl ? "" : classes.empty}`}
+                        src={`http://localhost:5000${user.photoUrl}`} alt={"ava"}/>
+                </NavLink>
+            </li>
+      </ul >
     );
 }
 

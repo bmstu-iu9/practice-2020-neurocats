@@ -2,40 +2,98 @@
   object-fit: cover;
   width: 250px;
   height: 250px;
+  border-radius: 50%;
 }
 .UserInfo {
   display: flex;
   flex-flow: row;
+  justify-content: flex-start;
   align-items: flex-end;
 }
+
+.ava {
+  position: relative;
+  width: 250px;
+  height: 250px;
+}
+
+.ava > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.avaEdit {
+  position: absolute;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+
+  background: black;
+  opacity: 50%;
+
+  color: white;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 20px ;
+  font-weight: 100;
+  text-decoration: none;
+}
+
+.block {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  margin-left: 30px;
+}
+
+.name {}
+
 .name, .edit {
   margin-left: 3%;
   color: black;
-  font-family: "Times New Roman"; 
-  font-size: 20px ; 
-  font-weight: 100px;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 20px ;
+  font-weight: 100;
   text-decoration: none;
 }
+
+
 .button1, .button2 {
+  height: 42px;
+  width: 60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   border: none;
   outline: none;
-  background: transparent;
   cursor: pointer;
-  width: 20%;
+
+  background: #f2f1f0;
 }
+
+.button1 {
+  border: solid 1px #dedddc;
+}
+
 .button2 {
-  position: relative;
-  padding-left: 12px;
+  margin-left: 10px;
 }
+
 .nameChangeField{
   border: none;
   outline: none;
   width: 60%;
   height: 42px;
-  padding-left: 15px;
-  background: transparent;
-}
-.block {
-  position: relative;  
+  padding: 0 15px;
   background: #f2f1f0;
 }

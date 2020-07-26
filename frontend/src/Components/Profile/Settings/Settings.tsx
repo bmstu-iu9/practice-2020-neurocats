@@ -2,22 +2,35 @@ import React, { useState } from "react";
 import classes from "./Settings.module.css"
 import ButtonTemplate from "../../Button/ButtonTemplate";
 
-function Settings(props: any) {
+interface Props {
+  pass: string,
+  email: string,
+}
+
+// FIXME (wait for backend auth)
+
+
+function Settings({pass, email}: Props) {
+
   const [editState, setEditState] = useState(false);
   const [address, setAddress] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPass, setRepeatPass] = useState('');
+
   let changeEmail = () => {
     if (!(address === '')) {
-      props.dispatch({ type: 'UPDATE_EMAIL', email: address });
+      //props.dispatch({ type: 'UPDATE_EMAIL', email: address });
+      // TODO mutations
     }
   }
+
   let changePassword = () => {
-    if (!(password === '') && (oldPassword === props.state.user.password) && (password === repeatPass)) {
-      props.dispatch({ type: 'UPDATE_PASSWORD', password: password });
+    if (!(password === '') && (oldPassword === pass) && (password === repeatPass)) {
+      //props.dispatch({ type: 'UPDATE_PASSWORD', password: password });
     }
   }
+
   return (
     <div className={classes.content}>
       {
@@ -25,7 +38,7 @@ function Settings(props: any) {
           (<div className={classes.block}>
             <div className={classes.name}>Settings</div>
 
-            <div className={classes.item}>E-mail: {props.state.user.email}</div>
+            <div className={classes.item}>E-mail: {email}</div>
             <div>
               <div className={classes.item}>Enter new address:</div>
               <input type="text" className={classes.field} onChange={e => setAddress(e.target.value)} />

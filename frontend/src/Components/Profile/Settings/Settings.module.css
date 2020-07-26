@@ -1,13 +1,17 @@
 .content {
   color: black;
-  font-family: "Times New Roman";
+  font-family: "Times New Roman", sans-serif;
   font-size: 20px;
-  font-weight: 100px;
+  font-weight: 100;
   width: 35%; 
+}
+.content button {
+  border: none;
+  background: none;
 }
 .block, .button1, .button2 {
   position: relative;
-  padding: 0px;
+  padding: 0;
 }
 .button2 {
   height: 20px;

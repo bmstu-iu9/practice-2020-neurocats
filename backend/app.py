@@ -18,7 +18,7 @@ PHOTO_NAME_EXPECTED = 'file'
 app = Flask(__name__, template_folder=template_dir)
 app.config['UPLOAD_FOLDER'] = 'photos'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-cors = CORS(app, resources={r"/*": {"origins": "localhost:3000"},
+cors = CORS(app, resources={r"/*": {"origins": r"^https?://localhost(:[0-9]{1,5})?$"},
                             r"/": {"origins": "*"}})
 
 

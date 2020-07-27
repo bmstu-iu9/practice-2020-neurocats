@@ -55,27 +55,33 @@ def allowed_file(filename):
 def index():
     return send_from_directory('static', 'index.html')
 
+
 @app.route('/<path:path>', methods=['GET'])
 def static_files(path):
     return send_from_directory('static', path)
+
 
 @app.route('/static/css/<path:path>', methods=['GET'])
 def static_css_files(path):
     return send_from_directory('static/static/css', path)
 
+
 @app.route('/static/js/<path:path>', methods=['GET'])
 def static_js_files(path):
     return send_from_directory('static/static/js', path)
+
 
 @app.route('/static/media/<path:path>', methods=['GET'])
 def static_media_files(path):
     return send_from_directory('static/static/media', path)
 
+
 @app.route('/logos/<path:path>', methods=['GET'])
 def static_logos_files(path):
     return send_from_directory('static/logos', path)
 
-@app.route('/users', methods=['GET', 'POST'])
+
+@app.route('/api/users', methods=['GET', 'POST'])
 def all_users():
     if request.method == 'GET':
         users = sql_transaction('select * from users')
@@ -98,7 +104,7 @@ def all_users():
         return make_response(json.dumps({'code': 'SUCCESS'}), 201)
 
 
-@app.route('/users/<int:id>', methods=['GET', 'UPDATE', 'DELETE'])
+@app.route('/api/users/<int:id>', methods=['GET', 'UPDATE', 'DELETE'])
 def one_user(id):
     if request.method == 'GET':
         query = 'select * from users where id=?'
@@ -147,7 +153,7 @@ def one_user(id):
         return make_response({"code": "SUCCESS"}, 204)
 
 
-@app.route('/users/<int:id>/cats', methods=['GET'])
+@app.route('/api/users/<int:id>/cats', methods=['GET'])
 def user_cats(id):
     query = 'select url from posted_cats where posted_by=?'
     cats = sql_transaction(query, (id, ))
@@ -156,7 +162,7 @@ def user_cats(id):
     return jsonify([c for t in cats for c in t])
 
 
-@app.route('/users/<int:id>/photo', methods=['GET', 'POST'])
+@app.route('/api/users/<int:id>/photo', methods=['GET', 'POST'])
 def user_photo(id):
     if request.method == 'GET':
         query = 'select photoUrl from users where id=?'
@@ -187,12 +193,12 @@ def user_photo(id):
         return {'code': 'SUCCESS', 'url': data}
 
 
-@app.route('/photo/<path:path>', methods=['GET'])
+@app.route('/api/photo/<path:path>', methods=['GET'])
 def send_photo(path):
     return send_from_directory('photos', path)
 
 
-@app.route('/users/<int:id>/folder', methods=['GET'])
+@app.route('/api/users/<int:id>/folder', methods=['GET'])
 def get_breeds_for_user(id):
     query = 'select breed from cats_photos where owner=?'
     breeds = sql_transaction(query, (id, ))
@@ -202,7 +208,7 @@ def get_breeds_for_user(id):
     return jsonify(list(set(breeds)))
 
 
-@app.route('/cats', methods=['GET', 'POST'])
+@app.route('/api/cats', methods=['GET', 'POST'])
 def cats():
     if request.method == 'GET':
         query = 'select * from cats_photos'
@@ -246,7 +252,7 @@ def cats():
         return {'code': 'SUCCESS', 'url': path}
 
 
-@app.route('/cats/<int:start>/list/<int:length>', methods=['GET'])
+@app.route('/api/cats/<int:start>/list/<int:length>', methods=['GET'])
 def list_of_photos(start, length):
     query = 'select photoUrl from cats_photos where id>=? limit ?'
     urls = sql_transaction(query, (start, length))
@@ -254,7 +260,7 @@ def list_of_photos(start, length):
     return jsonify(urls)
 
 
-@app.route('/cats/photo', methods=['GET'])
+@app.route('/api/cats/photo', methods=['GET'])
 def cats_url():
     query = 'select photoUrl from cats_photos'
     urls = sql_transaction(query)
@@ -263,7 +269,7 @@ def cats_url():
     return jsonify([t[0] for t in urls])
 
 
-@app.route('/cats/<string:breed>', methods=['GET'])
+@app.route('/api/cats/<string:breed>', methods=['GET'])
 def cats_photo_by_breed(breed):
     query = 'select * from cats_photos where breed=?'
     photos = sql_transaction(query, (breed, ))
@@ -276,7 +282,7 @@ def cats_photo_by_breed(breed):
                             photos)))
 
 
-@app.route('/cats/<string:breed>/photo', methods=['GET'])
+@app.route('/api/cats/<string:breed>/photo', methods=['GET'])
 def cats_url_by_breed(breed):
     query = 'select photoUrl from cats_photos where breed=?'
     urls = sql_transaction(query, (breed, ))
@@ -285,7 +291,7 @@ def cats_url_by_breed(breed):
     return jsonify([t[0] for t in urls])
 
 
-@app.route('/cats/<int:id>', methods=['GET', 'DELETE'])
+@app.route('/api/cats/<int:id>', methods=['GET', 'DELETE'])
 def cats_photo_by_id(id):
     if request.method == 'GET':
         query = 'select * from cats_photos where id=?'
@@ -309,7 +315,7 @@ def cats_photo_by_id(id):
             return make_response({"code": 'SUCCESS'}, 204)
 
 
-@app.route('/cats/<int:id>/photo', methods=['GET', 'UPDATE'])
+@app.route('/api/cats/<int:id>/photo', methods=['GET', 'UPDATE'])
 def cats_url_by_id(id):
     if request.method == 'GET':
         query = 'select photoUrl from cats_photos where id=?'
@@ -340,7 +346,7 @@ def cats_url_by_id(id):
         return {'code': 'SUCCESS', 'url': data}
 
 
-@app.route('/cats/<int:id>/like', methods=['UPDATE'])
+@app.route('/api/cats/<int:id>/like', methods=['UPDATE'])
 def like_cat(id):
     user = request.get_json()
     if 'id' not in user:
@@ -362,7 +368,7 @@ def like_cat(id):
     return make_response({'code': 'SUCCESS'})
 
 
-@app.route('/cats/<int:id>/unlike', methods=['UPDATE'])
+@app.route('/api/cats/<int:id>/unlike', methods=['UPDATE'])
 def unlike_cat(id):
     user = request.get_json()
     if 'id' not in user:

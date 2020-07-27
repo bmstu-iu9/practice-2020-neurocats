@@ -14,9 +14,9 @@ function Folders({userId, userCats}: Props) {
             <div className={classes.name}>Folders:</div>
             <div className={classes.folders}>
                 <OneFolder id={userId}/>
-                <div className={classes.button}>
+                <button className={classes.button1}>
                     <ButtonTemplate name="Add folder" type="light" to="#s" />
-                </div>
+                </button>
             </div>
         </div>
     );

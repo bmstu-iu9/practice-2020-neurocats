@@ -30,11 +30,13 @@ function SignUp(props: any) {
                 Repeat: <input name="pass" type="password" className={classes.item} 
                 onChange={e => setRepeatPass(e.target.value)}/>
             </div>
-            <div className={classes.sign}>
-                <ButtonTemplate name="Sign up" type="dark" to="#s" />
-            </div>
-            <div className={classes.sign}>
-                <ButtonTemplate name="Sign in" type="dark" to="/signIn" />
+            <div className={classes.buttons}>
+                <button className={classes.button1}>
+                    <ButtonTemplate name="Sign up" type="dark" to="#s" />
+                </button>
+                <button className={classes.button2}>
+                    <ButtonTemplate name="Sign in" type="dark" to="/signIn" />
+                </button>
             </div>
         </form>
     );

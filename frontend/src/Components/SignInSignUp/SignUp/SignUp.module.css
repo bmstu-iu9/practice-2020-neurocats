@@ -9,20 +9,32 @@
     font-size: 20px ; 
     font-weight: 100;
     margin-bottom: 2%;
+    width: 20%;
 }
 .item {
     background: #f2f1f0;
     border: none;
     outline: none;
-    width: 100%;
+    width: 96%;
     height: 42px;
-    padding-left: 15px;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 .inputContainer{
     margin-top: 5%;
-    width: 99%;
+    width: 100%;
 }
-.sign{
-    margin-top: 10%;
+.buttons {
+    display: flex;
+    flex-flow: column;
+}
+
+.button1,
+.button2 {
+    margin-top: 5%;
     cursor: pointer;
+    border: none;
+    padding: 0;
+    background: none;
+    width: 100%;
 }

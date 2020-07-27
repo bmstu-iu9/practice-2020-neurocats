@@ -10,7 +10,7 @@ interface Props {
 // FIXME (wait for backend auth)
 
 
-function Settings({pass, email}: Props) {
+function Settings({ pass, email }: Props) {
 
   const [editState, setEditState] = useState(false);
   const [address, setAddress] = useState('');
@@ -36,7 +36,7 @@ function Settings({pass, email}: Props) {
       {
         editState ?
           (<div className={classes.block}>
-            <div className={classes.name}>Settings</div>
+            <div>Settings</div>
 
             <div className={classes.item}>E-mail: {email}</div>
             <div>
@@ -57,15 +57,20 @@ function Settings({pass, email}: Props) {
               <input type="password" className={classes.field} onChange={e => setRepeatPass(e.target.value)} />
             </div>
 
-            <button className={classes.button1} onClick={() => { changeEmail(); changePassword(); }}>
-              <ButtonTemplate name="Save" type="dark" to="#s" />
-            </button>
-            <button onClick={() => { setEditState(false); }}><i className="fa fa-times" /></button>
+            <div className={classes.buttons}>
+              <button className={classes.button1} onClick={() => { changeEmail(); changePassword(); }}>
+                <ButtonTemplate name="Save" type="dark" to="#s" />
+              </button>
+              <button className={classes.button2} onClick={() => { setEditState(false); }}>
+                <ButtonTemplate name="Close" type="dark" to="#s" />
+              </button>
+            </div>
           </div>)
           :
-          (<button className={classes.button2} onClick={() => { setEditState(true) }}>
+          (<button className={classes.button3} onClick={() => { setEditState(true) }}>
             <div className={classes.name}>Settings</div>
-          </button>)
+          </button>
+          )
       }
     </div>
   );

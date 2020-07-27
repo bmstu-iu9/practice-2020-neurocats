@@ -10,9 +10,19 @@
     font-weight: 100;
     margin-bottom: 2%;
 }
-.sign{
+.buttons {
+    display: flex;
+    flex-flow: column;
+}
+
+.button1,
+.button2 {
     margin-top: 5%;
     cursor: pointer;
+    border: none;
+    padding: 0;
+    background: none;
+    width: 100%;
 }
 .item {
     margin-top: 2%;

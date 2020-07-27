@@ -2,7 +2,8 @@
     text-decoration: none;
     outline: none;
     display: inline-block;
-    padding: 10px 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     position: relative;
     color:black;
     font-family: "Times New Roman"; 
@@ -32,12 +33,14 @@
 }
 .lightButton {
   border: 2px solid #f8f4ff;
+  width: 100%;
+  text-align: center;
 }
 .darkButton:hover:after {
   border-color: #e6e6e6;
 }
 .darkButton {
   border: 2px solid #e6e6e6;
-  width: 87%;
+  width: 100%;
   text-align: center;
 }

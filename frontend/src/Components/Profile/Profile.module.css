@@ -11,3 +11,6 @@
 .item:not(:first-of-type) {
   padding-top: 10px;
 }
+.item {
+  width: 100%;
+}

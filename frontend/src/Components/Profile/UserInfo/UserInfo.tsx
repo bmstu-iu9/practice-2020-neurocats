@@ -1,21 +1,30 @@
 import React, {useCallback, useState} from "react";
 import classes from "./UserInfo.module.css"
+import Axios from "axios";
+import {User} from "../../../types";
 
 interface Props {
-    id: number,
-    name: string,
-    photoUrl: string,
+    isOwn: boolean
+    user: User,
+    refetchUser: () => void
 }
 
-function UserInfo({id, name, photoUrl}: Props) {
+function UserInfo({isOwn, user, refetchUser}: Props) {
     const [editState, setEditState] = useState(false);
-    const [newName, setNewName] = useState('');
+    const [newName, setNewName] = useState(user.name);
 
-    let changeName = () => {
-        if (!(name === '')){
-            //TODO
+    const changeName = useCallback(async () => {
+        if (newName !== '') {
+            try {
+                await Axios.patch(`/users/${user.id}`, {
+                    name: newName,
+                });
+                await refetchUser();
+            } catch (e) {
+                console.log(e);
+            }
         }
-    }
+    }, [refetchUser, newName, user.id]);
 
     const changeAvatar = useCallback(() => {
         const input: HTMLInputElement = document.createElement("input");
@@ -28,27 +37,41 @@ function UserInfo({id, name, photoUrl}: Props) {
         input.onchange = async () => {
             const file = input.files?.item(0);
             if (!file) return;
-            const blob = new Blob([file], {type: file.type});
-            // await userProvider.uploadPhoto(id, file.name, blob);
+            const form = new FormData();
+            form.append("file", file);
+            try {
+                await Axios.post(`/users/${user.id}/photo`, form);
+                await refetchUser();
+            } catch (e) {
+                console.log(e);
+            }
             document.body.removeChild(input);
         };
-    }, [id]);
+    }, [user.id, refetchUser]);
+
 
     return (
         <div className={classes.UserInfo}>
             <div className={classes.ava}>
                 <img
-                    className={`${photoUrl ? "" : classes.empty}`}
-                    src={`http://localhost:5000${photoUrl}`} alt={"ava"}
+                    className={`${user.photoUrl ? "" : classes.empty}`}
+                    src={`http://localhost:5000/api${user.photoUrl}`} alt={"ava"}
                 />
-                <div className={classes.avaEdit} onClick={changeAvatar}>
-                    <span>Изменить</span>
-                </div>
+                {isOwn &&
+                    <div className={classes.avaEdit} onClick={changeAvatar}>
+                        <span>Изменить</span>
+                    </div>
+                }
             </div>
             <div className={classes.block}>
                 {editState ?
                     <>
-                        <input type="text" className={`${classes.nameChangeField} ${classes.edit}`} value={name} onChange={e => setNewName(e.target.value)}/>
+                        <input
+                            type="text"
+                            className={`${classes.nameChangeField} ${classes.edit}`}
+                            value={newName}
+                            onChange={e => setNewName(e.target.value)}
+                        />
                         <button className={classes.button1}
                                 onClick={() => { setEditState(false); changeName(); }}>
                             <div className={classes.save}>Save</div>
@@ -56,10 +79,12 @@ function UserInfo({id, name, photoUrl}: Props) {
                     </>
                     :
                     <>
-                        <div className={classes.name}>@{name}</div>
-                        <button className={classes.button2} onClick={() => { setEditState(true) }}>
-                            <i className="fa fa-edit"/>
-                        </button>
+                        <div className={classes.name}>@{user.name}</div>
+                        {isOwn &&
+                            <button className={classes.button2} onClick={() => { setEditState(true) }}>
+                                <i className="fa fa-edit"/>
+                            </button>
+                        }
                     </>
                 }
             </div>

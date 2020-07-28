@@ -1,47 +1,40 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useCallback, useMemo} from "react";
 import classes from "./Profile.module.css"
 import Folders from "./Folders/Folders";
 import UserInfo from "./UserInfo/UserInfo";
 import IdentifyBreed from "./IdentifyBreed/IdentifyBreed";
 import Settings from "./Settings/Settings";
-import {useHistory, useParams} from "react-router";
-import Axios, {AxiosError} from "axios";
+import {useParams} from "react-router";
+import Axios from "axios";
 import {User} from "../../types";
 import {useUser} from "../../context";
+import {useAsync} from "../../helps/useAsync";
+import Loader from "../Loader/Loader";
 
 function Profile() {
     const params = useParams<{ id: string }>();
-    const history = useHistory();
     const myUser = useUser();
-    const isOwn = useMemo(() => {return(params.id === myUser.id.toString());},[])
+    const isOwn = useMemo(() => {
+        return (params.id === myUser.id.toString());
+    }, [params.id, myUser.id])
 
-    const [user, setUser] = useState<User>();
-    useEffect(() => {
-        (async () => {
-            try {
-                const {data} = await Axios.get(`/users/${params.id}`);
-                setUser(data)
-            } catch (e) {
-                if (e.isAxiosError) {
-                    const err = e as AxiosError;
-                    if (err.response?.status === 404) {
-                        history.push("/404");
-                    }
-                }
-                console.log("Some server error:", e);
-            }
-        })();
-    }, [setUser, params]);
+    // data loading (user)
+    const {result, loading, error, refetch} = useAsync(useCallback(() => Axios.get<User>(`/users/${params.id}`), [params.id]));
+    if (result === undefined && loading) return <Loader/>;
+    // TODO insert <Error msg={error}/>
+    if (result === undefined || error) return <div><span>Error: {error}</span></div>;
 
+    const {data: user} = result;
     if (!user) return <div>Error</div>
 
     return (
         <div className={classes.profile}>
             <div className={classes.item}>
                 <UserInfo
-                    id={user!.id}
-                    name={user!.name}
-                    photoUrl={user!.photoUrl}/>
+                    isOwn={isOwn}
+                    user={user!}
+                    refetchUser={refetch}
+                />
             </div>
             <div className={classes.item}>
                 <Folders

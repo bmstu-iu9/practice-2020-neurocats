@@ -26,9 +26,11 @@
 .avaEdit {
   position: absolute;
   bottom: 0;
-  height: 100%;
   width: 100%;
   border-radius: 50%;
+
+  height: 0;
+  overflow-y: hidden;
 
   display: flex;
   flex-flow: row;
@@ -43,6 +45,11 @@
   font-size: 20px ;
   font-weight: 100;
   text-decoration: none;
+  cursor: pointer;
+}
+
+.ava:hover .avaEdit {
+  height: 100%;
 }
 
 .block {
@@ -97,3 +104,4 @@
   padding: 0 15px;
   background: #f2f1f0;
 }
+

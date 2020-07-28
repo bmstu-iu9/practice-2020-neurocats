@@ -3,14 +3,16 @@
     justify-content: center;
     flex-flow: column;
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%)
 }
 .block{
-    justify-content: center;
-    display: flex;
+  display: flex;
+  justify-content: center;
+  flex-flow: row;
+  margin-bottom: 10%;
 }
 .number {
   color: #f2f1f0;
@@ -21,11 +23,16 @@
 .item{
   color:black;
   font-family: "Times New Roman"; 
-  font-size:30px ; 
+  font-size: 25px ; 
   font-weight:100px;
+  text-decoration: none;
+}
+.linkk {
+  position: absolute;
+  margin-top: 8%;
 }
 .photo {
-  margin-top: 10%;
+  margin-left: 12%;
   width: 150px;
   height: auto;
 }

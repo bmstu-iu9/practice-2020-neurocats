@@ -41,7 +41,7 @@ function SearchForm({className}: Props) {
                 </PopUpTrigger>
                 <PopUpContent>
                     <div className={`${classes.popup} ${className}`}>
-                        {breeds.filter(el => el.search(new RegExp(searchText + "")) != -1).map((el, ind) =>
+                        {breeds.filter(el => el.search(new RegExp(searchText + "")) !== -1).map((el, ind) =>
                             <div key={ind} className={classes.chip} onClick={() => {setSearchText(el)}}>
                                 <span>{el}</span>
                             </div>

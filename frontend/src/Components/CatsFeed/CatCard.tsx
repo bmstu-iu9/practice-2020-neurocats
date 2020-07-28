@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback} from "react";
 import classes from "./CatCard.module.css";
 import {CatsPhoto, User} from "../../types";
 import { Link } from "react-router-dom";
@@ -6,30 +6,39 @@ import Axios from "axios";
 import {useAsync} from "../../helps/useAsync";
 import Loader from "../Loader/Loader";
 import {useUser} from "../../context";
+import ServerError from "../ServerError/ServerError";
 
 interface Props {
     cat: CatsPhoto,
+    refetchCats: () => void
 }
 
-function CatCard({ cat }: Props) {
+function CatCard({ cat, refetchCats }: Props) {
 
     const myUser = useUser();
-    const [myLike, setMyLike] = useState(cat.likes.indexOf(myUser.id) !== -1);
-
-    const like = useCallback(() => {
-        setMyLike(true);
-        // TODO like
-    }, [myLike, setMyLike]);
-    const unLike = useCallback(() => {
-        setMyLike(false);
-        // TODO unlike
-    }, [myLike, setMyLike]);
 
     // data loading (owner)
-    const {result, loading, error} = useAsync(useCallback(() => Axios.get<User>(`/users/${cat?.owner}`), []));
+    const {result, loading, error} = useAsync(useCallback(() => Axios.get<User>(`/users/${cat?.owner}`), [cat]));
+
+    const like = useCallback(async () => {
+        try {
+            await Axios.post(`/cats/${cat.id}/like`, myUser);
+            await refetchCats();
+        } catch (e) {
+            console.log(e);
+        }
+    }, [refetchCats, cat, myUser]);
+    const unLike = useCallback(async () => {
+        try {
+            await Axios.post(`/cats/${cat.id}/unlike`, myUser);
+            await refetchCats();
+        } catch (e) {
+            console.log(e);
+        }
+    }, [refetchCats, cat, myUser]);
+
     if (loading) return <Loader/>;
-    // TODO insert <Error msg={error}/>
-    if (result === undefined || error) console.log("Owner error");
+    if (result === undefined || error) return <ServerError message={error?.message ?? "undefined cat owner"}/>;
 
     const owner = result!.data;
 
@@ -43,7 +52,7 @@ function CatCard({ cat }: Props) {
             <div className={classes.breed}>
                 <span>{cat.breed}</span>
             </div>
-            <div className={`${classes.like} ${myLike ? classes.liked : ""}`} onClick={myLike ? unLike : like}>
+            <div className={`${classes.like} ${cat.likes.includes(myUser.id) ? classes.liked : ""}`} onClick={cat.likes.includes(myUser.id) ? unLike : like}>
                 <i className="fas fa-heart" />
                 <span>&nbsp;{cat.likes.length}</span>
             </div>

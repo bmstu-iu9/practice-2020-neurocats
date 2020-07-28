@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React, {useCallback, useState} from "react";
 import classes from "./Settings.module.css"
 import ButtonTemplate from "../../Button/ButtonTemplate";
+import {useUser} from "../../../context";
 
 interface Props {
-  pass: string,
   email: string,
 }
 
-// FIXME (wait for backend auth)
 
-
-function Settings({ pass, email }: Props) {
+function Settings({email}: Props) {
+  const myUser = useUser();
 
   const [editState, setEditState] = useState(false);
   const [address, setAddress] = useState('');
@@ -18,18 +17,22 @@ function Settings({ pass, email }: Props) {
   const [password, setPassword] = useState('');
   const [repeatPass, setRepeatPass] = useState('');
 
-  let changeEmail = () => {
-    if (!(address === '')) {
-      //props.dispatch({ type: 'UPDATE_EMAIL', email: address });
-      // TODO mutations
-    }
-  }
+  const saveChanges = useCallback(async () => {
+    if (password === repeatPass) {
+      //TODO with auth
 
-  let changePassword = () => {
-    if (!(password === '') && (oldPassword === pass) && (password === repeatPass)) {
-      //props.dispatch({ type: 'UPDATE_PASSWORD', password: password });
+      // try {
+      //   await Axios.patch(`/users/${myUser.id}`, {
+      //     email: address,
+      //     password: oldPassword,
+      //     newPassword: password
+      //   });
+      // } catch (e) {
+      //   console.log(e);
+      // }
+      setEditState(false);
     }
-  }
+  }, [address, password, oldPassword, repeatPass, setEditState, myUser.id]);
 
   return (
     <div className={classes.content}>
@@ -58,11 +61,13 @@ function Settings({ pass, email }: Props) {
             </div>
 
             <div className={classes.buttons}>
-              <button className={classes.button1} onClick={() => { changeEmail(); changePassword(); }}>
-                <ButtonTemplate name="Save" type="dark" to="#s" />
+              <button className={classes.button1} onClick={() => saveChanges}>
+                <ButtonTemplate name="Save" type="dark" to="#s"/>
               </button>
-              <button className={classes.button2} onClick={() => { setEditState(false); }}>
-                <ButtonTemplate name="Close" type="dark" to="#s" />
+              <button className={classes.button2} onClick={() => {
+                setEditState(false);
+              }}>
+                <ButtonTemplate name="Close" type="dark" to="#s"/>
               </button>
             </div>
           </div>)

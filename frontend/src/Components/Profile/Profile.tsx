@@ -10,6 +10,7 @@ import {User} from "../../types";
 import {useUser} from "../../context";
 import {useAsync} from "../../helps/useAsync";
 import Loader from "../Loader/Loader";
+import ServerError from "../ServerError/ServerError";
 
 function Profile() {
     const params = useParams<{ id: string }>();
@@ -21,8 +22,7 @@ function Profile() {
     // data loading (user)
     const {result, loading, error, refetch} = useAsync(useCallback(() => Axios.get<User>(`/users/${params.id}`), [params.id]));
     if (result === undefined && loading) return <Loader/>;
-    // TODO insert <Error msg={error}/>
-    if (result === undefined || error) return <div><span>Error: {error}</span></div>;
+    if (result === undefined || error) return <ServerError message={error?.message ?? "undefined user"}/>;
 
     const {data: user} = result;
     if (!user) return <div>Error</div>
@@ -48,7 +48,7 @@ function Profile() {
 
             { isOwn &&
             <div className={classes.item}>
-                <Settings pass={user.password} email={user.email}/>
+                <Settings email={user.email}/>
             </div>
             }
         </div>

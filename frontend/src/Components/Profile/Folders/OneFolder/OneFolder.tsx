@@ -5,20 +5,25 @@ import {Link} from "react-router-dom";
 
 interface Props {
     id: number,
+    breed: string,
 }
 
-function OneFolder({id}: Props) {
+function OneFolder({id, breed}: Props) {
     const cards = [];
+
     for (let i = 0; i < 3; i++) {
         cards.push("https://www.sunhome.ru/i/foto/211/bolshaya-panda.orig.jpg");
     }
+
     if (cards.length !== 4) {
         while (cards.length !== 4) {
             cards.push("");
         }
     }
+
     const row1 = cards.slice(0, 2);
     const row2 = cards.slice(2);
+
     return (
         <div className={classes.OneFile}>
             <Link to={`/${id}/folder`} className={classes.files}>
@@ -29,7 +34,7 @@ function OneFolder({id}: Props) {
                     {row2.map((e, i) => <PhotoCard key={i} url={e}/>)}
                 </div>
             </Link>
-            <div className={classes.name}>Name</div>
+            <div className={classes.name}>{breed}</div>
         </div>
     );
 }

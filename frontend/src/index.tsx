@@ -6,8 +6,10 @@ import App from "./Components/App";
 import * as serviceWorker from "./serviceWorker";
 import Axios from "axios";
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV !== "production") {
     Axios.defaults.baseURL = "http://localhost:5000/api";
+} else {
+    Axios.defaults.baseURL = `http://${window.location.host}/api`;
 }
 
 (async () => {

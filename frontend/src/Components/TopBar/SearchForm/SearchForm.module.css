@@ -37,3 +37,30 @@
 .btn > i {
   color: #ccc;
 }
+
+.popup {
+  min-height: 42px;
+  padding: 0 0 20px 20px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.chip {
+  display: flex;
+
+  height: 30px;
+  margin-top: 20px;
+  margin-right: 20px;
+  padding: 0 15px;
+  border-radius: 15px;
+
+  font-size: 14px;
+
+  align-items: center;
+
+  outline: none;
+  border: none;
+
+  background: #D1DDFF;
+  white-space: nowrap;
+}

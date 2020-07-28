@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 
 interface AsyncData<T> {
     result?: T;
@@ -6,25 +6,38 @@ interface AsyncData<T> {
     error?: Error;
 }
 
-export function useAsync<T>(call: () => Promise<T>) {
+type useAsyncReturnType<T> =  AsyncData<T> & {refetch: () => void};
+
+export function useAsync<T>(call: () => Promise<T>): useAsyncReturnType<T> {
     const [data, setData] = useState<AsyncData<T>>({
         loading: true
     });
 
-    useEffect(() => {
-        setData({
-            loading: true
-        });
-        call().then(res => {
+    const fetch = useCallback(async () => {
+        setData(prev => ({
+            loading: true,
+            result: prev.result
+        }));
+        try {
+            const res = await call();
             setData({
                 result: res,
                 loading: false
             });
-        }).catch(reason => setData({
-            error: reason,
-            loading: false
-        }));
+        } catch (e) {
+            setData({
+                error: e,
+                loading: false
+            });
+        }
     }, [call]);
 
-    return data;
+    useEffect(() => {
+        fetch().then();
+    }, [fetch]);
+
+    return useMemo((): useAsyncReturnType<T> => ({
+        ...data,
+        refetch: fetch
+    }), [data, fetch]);
 }

@@ -21,7 +21,7 @@ function TopBar() {
                 </NavLink>
             </li>
             <li className={classes.search}>
-                <SearchForm />
+                <SearchForm className={classes.searchForm}/>
             </li>
             <li>
                 <NavLink
@@ -31,7 +31,7 @@ function TopBar() {
                     <span>{user.name}</span>
                     <img
                         className={`${classes.img} ${classes.ava} ${user.photoUrl ? "" : classes.empty}`}
-                        src={`http://localhost:5000${user.photoUrl}`} alt={"ava"}/>
+                        src={`http://localhost:5000/api${user.photoUrl}`} alt={"ava"}/>
                 </NavLink>
             </li>
       </ul >

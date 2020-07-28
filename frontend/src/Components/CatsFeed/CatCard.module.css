@@ -14,7 +14,7 @@
     width: 180px;
     color: black;
     font-family: "Times New Roman", sans-serif;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 100;
 }
 
@@ -60,7 +60,7 @@
     display: none;
 }
 .liked > i {
-    color: #E21919;
+    color: #ff8080;
 }
 
 .owner {

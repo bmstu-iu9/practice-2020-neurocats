@@ -18,6 +18,14 @@ function CatsFeed() {
 
     const {data: cats} = result;
     if (cats.length === 0) return <ErrorFeed/>;
+    if (cats.length !== 15){
+        while (cats.length !== 15) {
+            cats.push({id: 0, photoUrl: "", breed: "", owner: 0, likes:[]});
+        }
+    }
+    let cats1 = cats.slice(1,5);
+    let cats2 = cats.slice(5, 10);
+    let cats3 = cats.slice(10);
 
     //TODO rewrite this
     return (
@@ -26,25 +34,13 @@ function CatsFeed() {
                 <div className={"CatsFeed_Border"}>
                     <div className={"CatsFeed_Row"}>
                         <CatCard cat={cats[0]}/>
-                        {cats.length > 1 ? <CatCard cat={cats[1]}/> : <EmptyCatCard/>}
-                        {cats.length > 2 ? <CatCard cat={cats[2]}/> : <EmptyCatCard/>}
-                        {cats.length > 3 ? <CatCard cat={cats[3]}/> : <EmptyCatCard/>}
-                        {cats.length > 4 ? <CatCard cat={cats[4]}/> : <EmptyCatCard/>}
-
+                        {cats1.map(e => e.id !== 0 ? <CatCard cat={e}/> : <EmptyCatCard/>)}
                     </div>
                     <div className={"CatsFeed_Row"}>
-                        {cats.length > 5 ? <CatCard cat={cats[5]}/> : <EmptyCatCard/>}
-                        {cats.length > 6 ? <CatCard cat={cats[6]}/> : <EmptyCatCard/>}
-                        {cats.length > 7 ? <CatCard cat={cats[7]}/> : <EmptyCatCard/>}
-                        {cats.length > 8 ? <CatCard cat={cats[8]}/> : <EmptyCatCard/>}
-                        {cats.length > 9 ? <CatCard cat={cats[9]}/> : <EmptyCatCard/>}
+                        {cats2.map(e => e.id !== 0 ? <CatCard cat={e}/> : <EmptyCatCard/>)}
                     </div>
                     <div className={"CatsFeed_Row"}>
-                        {cats.length > 10 ? <CatCard cat={cats[10]}/> : <EmptyCatCard/>}
-                        {cats.length > 11 ? <CatCard cat={cats[11]}/> : <EmptyCatCard/>}
-                        {cats.length > 12 ? <CatCard cat={cats[12]}/> : <EmptyCatCard/>}
-                        {cats.length > 13 ? <CatCard cat={cats[13]}/> : <EmptyCatCard/>}
-                        {cats.length > 14 ? <CatCard cat={cats[14]}/> : <EmptyCatCard/>}
+                        {cats3.map(e => e.id !== 0 ? <CatCard cat={e}/> : <EmptyCatCard/>)}
                     </div>
                 </div>
             </div>

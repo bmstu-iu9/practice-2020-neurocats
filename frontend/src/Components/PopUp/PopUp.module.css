@@ -21,4 +21,5 @@
     z-index: 3;
     box-shadow: 0 1px 5px #aaaaaa;
     background: white;
+    min-width: 100%;
 }

@@ -59,6 +59,10 @@
     color: white;
     display: none;
 }
+.liked > i {
+    color: #E21919;
+}
+
 .owner {
     position: absolute;
     bottom: 10px;
@@ -69,12 +73,6 @@
     justify-content: flex-start;
     align-items: center;
     text-decoration: none;
-}
-
-.container > .breed .cover .like .owner {
-}
-
-.container:hover > .cover .breed .like .owner {
 }
 
 .ava {
@@ -97,6 +95,9 @@
     display: block;
 }
 .container:hover .like{
+    display: block;
+}
+.container:hover .liked{
     display: block;
 }
 .container:hover .name{

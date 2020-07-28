@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./ErrorFeed.module.css";
 
-function CatsFeed() {
+function ErrorFeed() {
 
     return (
         <div className={classes.CatsFeed_Container}>
@@ -12,4 +12,4 @@ function CatsFeed() {
     )
 }
 
-export default CatsFeed;
+export default ErrorFeed;

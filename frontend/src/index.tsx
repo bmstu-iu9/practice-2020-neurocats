@@ -7,7 +7,7 @@ import * as serviceWorker from "./serviceWorker";
 import Axios from "axios";
 
 if (process.env.NODE_ENV === "development") {
-    Axios.defaults.baseURL = "http://localhost:5000";
+    Axios.defaults.baseURL = "http://localhost:5000/api";
 }
 
 (async () => {

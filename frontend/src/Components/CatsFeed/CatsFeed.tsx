@@ -1,25 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback} from "react";
 import "./CatsFeed.css";
-import CatCard from "./CatCard";
 import Axios from "axios";
 import {CatsPhoto} from "../../types";
+import {useAsync} from "../../helps/useAsync";
+import Loader from "../Loader/Loader";
+import ErrorFeed from "./ErrorFeed";
+import CatCard from "./CatCard";
+import EmptyCatCard from "./EmptyCatCard";
 
 function CatsFeed() {
-    const [cats, setCats] = useState<CatsPhoto[]>([]);
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const res = await Axios.get<CatsPhoto[]>("/cats");
-                console.log(res);
-                setCats(res.data.slice(0, 15));
-            } catch (e) {
-                console.log("Some server error:", e);
-            }
-        })();
-    }, []);
+    // data loading (cats)
+    const {result, loading, error} = useAsync(useCallback(() => Axios.get<CatsPhoto[]>("/cats"), []));
+    if (loading) return <Loader/>;
+    // TODO insert <Error msg={error}/>
+    if (result === undefined || error) return <div><span>Error: {error}</span><ErrorFeed/></div>;
 
-    if (cats.length === 0) return <h2>Sorry, no cats</h2>;
+    const {data: cats} = result;
+    if (cats.length === 0) return <ErrorFeed/>;
 
     //TODO rewrite this
     return (
@@ -27,25 +25,26 @@ function CatsFeed() {
             <div className={"FeedBorder"}>
                 <div className={"CatsFeed_Border"}>
                     <div className={"CatsFeed_Row"}>
-                        <CatCard cat={cats[0] ?? undefined}/>
-                        <CatCard cat={cats[1] ?? undefined}/>
-                        <CatCard cat={cats[2] ?? undefined}/>
-                        <CatCard cat={cats[3] ?? undefined}/>
-                        <CatCard cat={cats[4] ?? undefined}/>
+                        <CatCard cat={cats[0]}/>
+                        {cats.length > 1 ? <CatCard cat={cats[1]}/> : <EmptyCatCard/>}
+                        {cats.length > 2 ? <CatCard cat={cats[2]}/> : <EmptyCatCard/>}
+                        {cats.length > 3 ? <CatCard cat={cats[3]}/> : <EmptyCatCard/>}
+                        {cats.length > 4 ? <CatCard cat={cats[4]}/> : <EmptyCatCard/>}
+
                     </div>
                     <div className={"CatsFeed_Row"}>
-                        <CatCard cat={cats[5] ?? undefined}/>
-                        <CatCard cat={cats[6] ?? undefined}/>
-                        <CatCard cat={cats[7] ?? undefined}/>
-                        <CatCard cat={cats[8] ?? undefined}/>
-                        <CatCard cat={cats[9] ?? undefined}/>
+                        {cats.length > 5 ? <CatCard cat={cats[5]}/> : <EmptyCatCard/>}
+                        {cats.length > 6 ? <CatCard cat={cats[6]}/> : <EmptyCatCard/>}
+                        {cats.length > 7 ? <CatCard cat={cats[7]}/> : <EmptyCatCard/>}
+                        {cats.length > 8 ? <CatCard cat={cats[8]}/> : <EmptyCatCard/>}
+                        {cats.length > 9 ? <CatCard cat={cats[9]}/> : <EmptyCatCard/>}
                     </div>
                     <div className={"CatsFeed_Row"}>
-                        <CatCard cat={cats[10] ?? undefined}/>
-                        <CatCard cat={cats[11] ?? undefined}/>
-                        <CatCard cat={cats[12] ?? undefined}/>
-                        <CatCard cat={cats[13] ?? undefined}/>
-                        <CatCard cat={cats[14] ?? undefined}/>
+                        {cats.length > 10 ? <CatCard cat={cats[10]}/> : <EmptyCatCard/>}
+                        {cats.length > 11 ? <CatCard cat={cats[11]}/> : <EmptyCatCard/>}
+                        {cats.length > 12 ? <CatCard cat={cats[12]}/> : <EmptyCatCard/>}
+                        {cats.length > 13 ? <CatCard cat={cats[13]}/> : <EmptyCatCard/>}
+                        {cats.length > 14 ? <CatCard cat={cats[14]}/> : <EmptyCatCard/>}
                     </div>
                 </div>
             </div>

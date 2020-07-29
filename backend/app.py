@@ -104,7 +104,7 @@ def all_users():
         return make_response(json.dumps({'code': 'SUCCESS'}), 201)
 
 
-@app.route('/api/users/<int:id>', methods=['GET', 'UPDATE', 'DELETE'])
+@app.route('/api/users/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
 def one_user(id):
     if request.method == 'GET':
         query = 'select * from users where id=?'
@@ -121,7 +121,7 @@ def one_user(id):
             return jsonify(user)
         else:
             abort(404)
-    elif request.method == 'UPDATE':
+    elif request.method == 'PATCH':
         update = request.get_json()
         query = 'UPDATE users SET {0}=(?) where id='+str(id)
         data = list(update.items())
@@ -315,7 +315,7 @@ def cats_photo_by_id(id):
             return make_response({"code": 'SUCCESS'}, 204)
 
 
-@app.route('/api/cats/<int:id>/photo', methods=['GET', 'UPDATE'])
+@app.route('/api/cats/<int:id>/photo', methods=['GET', 'PATCH'])
 def cats_url_by_id(id):
     if request.method == 'GET':
         query = 'select photoUrl from cats_photos where id=?'
@@ -346,7 +346,7 @@ def cats_url_by_id(id):
         return {'code': 'SUCCESS', 'url': data}
 
 
-@app.route('/api/cats/<int:id>/like', methods=['UPDATE'])
+@app.route('/api/cats/<int:id>/like', methods=['PATCH'])
 def like_cat(id):
     user = request.get_json()
     if 'id' not in user:
@@ -368,7 +368,7 @@ def like_cat(id):
     return make_response({'code': 'SUCCESS'})
 
 
-@app.route('/api/cats/<int:id>/unlike', methods=['UPDATE'])
+@app.route('/api/cats/<int:id>/unlike', methods=['PATCH'])
 def unlike_cat(id):
     user = request.get_json()
     if 'id' not in user:

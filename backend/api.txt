@@ -10,7 +10,7 @@ Users:
 /api/users/<int:id> (DONE)
 method:
     GET: returns User's entity with id 
-    UPDATE: requires any User  fields except id and userCatsPhotoUrl
+    PATCH: requires any User  fields except id and userCatsPhotoUrl
     DELETE: deletes user with id
 
 /api/users/<int:id>/cats (DONE)
@@ -71,16 +71,16 @@ method:
 /api/cats/<int:id>/photo (DONE)
 method:
     GET: returns url of CatsPhoto with id
-    UPDATE: requires photo passed with form
+    PATCH: requires photo passed with form
 
 
 /api/cats/<int:id>/like (DONE)
 method:
-        UPDATE: likes CatsPhoto with id by current user
+        PATCH: likes CatsPhoto with id by current user
 
 /api/cats/<int:id>/unlike (DONE)
 method:
-    UPDATE: delete like by current user if exists
+    PATCH: delete like by current user if exists
 
 ---------------------------------------------
 

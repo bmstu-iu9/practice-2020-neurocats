@@ -1,6 +1,7 @@
 import json
 import os
-
+from random import  choice
+from string import ascii_uppercase
 
 from flask import Flask, request, make_response, jsonify, abort, send_from_directory
 from hashlib import md5
@@ -181,7 +182,8 @@ def user_photo(id):
         file = request.files[PHOTO_NAME_EXPECTED]
         if not file.filename or not allowed_file(file.filename):
             return make_response({"Error: ": 'Incorrect filename'}, 400)
-        name = md5(file.filename.encode()).hexdigest()
+        suffix = (''.join(choice(ascii_uppercase)) for i in range(12))
+        name = md5((file.filename + str(suffix)).encode()).hexdigest()
         name += os.path.splitext(file.filename)[1].strip().lower()
         query = 'update users set photoUrl = ? where id=?'
         data = os.path.join('/photo/', name)
@@ -208,7 +210,7 @@ def get_breeds_for_user(id):
     return jsonify(list(set(breeds)))
 
 
-@app.route('/api/cats', methods=['GET', 'POST'])
+@app.route('/api/cats', methods=['GET'])
 def cats():
     if request.method == 'GET':
         query = 'select * from cats_photos'
@@ -220,36 +222,6 @@ def cats():
                                            'breed': p[2], 'owner': p[3],
                                            'likes': [t[0] for t in sql_transaction(query, (p[0], ))]},
                                 photos)))
-    else:
-        if PHOTO_NAME_EXPECTED not in request.files:
-            return make_response({"Error: ":
-                                  f'No {PHOTO_NAME_EXPECTED} field has found'},
-                                 400)
-        try:
-            user = json.loads(request.form['json'])
-        except KeyError as error:
-            user = request.get_json()
-            if user is None:
-                return make_response({"Error": str(error)}, 400)
-        if 'id' not in user:
-            return make_response({"Error": "No user id passed"}, 400)
-        file = request.files[PHOTO_NAME_EXPECTED]
-        if not file.filename or not allowed_file(file.filename):
-            return make_response({"Error: ": 'Incorrect filename'}, 400)
-        name = md5(file.filename.encode()).hexdigest()
-        name += os.path.splitext(file.filename)[1].strip().lower()
-        query = 'insert into cats_photos(photoUrl, breed, owner) values(?, ?, ?)'
-        path = os.path.join('/photo/', name)
-        res = sql_transaction(query, (path, "", user['id']))
-        if isinstance(res, sqlite3.Error):
-            return make_response({"Error": str(res)}, 424)
-        query = 'insert into posted_cats(posted_by, url) values(?, ?)'
-        res = sql_transaction(query, (user['id'], path))
-        if isinstance(res, sqlite3.Error):
-            return make_response({"Error": str(res)}, 424)
-        if not os.path.isfile(f'{app.config["UPLOAD_FOLDER"]}/{name}'):
-            file.save(f'{app.config["UPLOAD_FOLDER"]}/{name}')
-        return {'code': 'SUCCESS', 'url': path}
 
 
 @app.route('/api/cats/<int:start>/list/<int:length>', methods=['GET'])
@@ -291,7 +263,7 @@ def cats_url_by_breed(breed):
     return jsonify([t[0] for t in urls])
 
 
-@app.route('/api/cats/<int:id>', methods=['GET', 'DELETE'])
+@app.route('/api/cats/<int:id>', methods=['GET', 'POST', 'DELETE'])
 def cats_photo_by_id(id):
     if request.method == 'GET':
         query = 'select * from cats_photos where id=?'
@@ -306,6 +278,29 @@ def cats_photo_by_id(id):
                            (photo[0]))
         else:
             abort(404)
+    elif request.method == 'POST':
+        if PHOTO_NAME_EXPECTED not in request.files:
+            return make_response({"Error: ":
+                                  f'No {PHOTO_NAME_EXPECTED} field has found'},
+                                 400)
+        file = request.files[PHOTO_NAME_EXPECTED]
+        if not file.filename or not allowed_file(file.filename):
+            return make_response({"Error: ": 'Incorrect filename'}, 400)
+        suffix = (''.join(choice(ascii_uppercase)) for i in range(12))
+        name = md5((file.filename + str(suffix)).encode()).hexdigest()
+        name += os.path.splitext(file.filename)[1].strip().lower()
+        query = 'insert into cats_photos(photoUrl, breed, owner) values(?, ?, ?)'
+        path = os.path.join('/photo/', name)
+        res = sql_transaction(query, (path, "", id))
+        if isinstance(res, sqlite3.Error):
+            return make_response({"Error": str(res)}, 424)
+        query = 'insert into posted_cats(posted_by, url) values(?, ?)'
+        res = sql_transaction(query, (id, path))
+        if isinstance(res, sqlite3.Error):
+            return make_response({"Error": str(res)}, 424)
+        if not os.path.isfile(f'{app.config["UPLOAD_FOLDER"]}/{name}'):
+            file.save(f'{app.config["UPLOAD_FOLDER"]}/{name}')
+        return {'code': 'SUCCESS', 'url': path}
     else:
         query = 'delete from cats_photos where id=?'
         photo = sql_transaction(query, (id,))
@@ -334,7 +329,8 @@ def cats_url_by_id(id):
         file = request.files[PHOTO_NAME_EXPECTED]
         if not file.filename or not allowed_file(file.filename):
             return make_response({"Error: ": 'Incorrect filename'}, 400)
-        name = md5(file.filename.encode()).hexdigest()
+        suffix = (''.join(choice(ascii_uppercase)) for i in range(12))
+        name = md5((file.filename + str(suffix)).encode()).hexdigest()
         name += os.path.splitext(file.filename)[1].strip().lower()
         query = 'update cats_photos set photoUrl = ? where id= ?'
         data = os.path.join('/photo/', name)

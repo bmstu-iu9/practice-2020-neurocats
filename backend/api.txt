@@ -39,7 +39,7 @@ CatsPhotos:
 /api/cats (DONE)
 method:
     GET: returns all CatsPhoto
-    POST: requires photo passed with form
+
 
 
 /api/cats/<int:start>/list/<int:length> (DONE)
@@ -65,6 +65,7 @@ method:
 /api/cats/<int:id> (DONE)
 method:
     GET: returns CatsPhoto with id
+    POST: requires photo passed with form, posts it by user with id
     DELETE: deletes CatsPhoto with id
 
 

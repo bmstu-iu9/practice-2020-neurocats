@@ -158,8 +158,24 @@ def one_user(id):
 
 @app.route('/api/users/<int:id>/cats', methods=['GET'])
 def user_cats(id):
-    query = 'select url from posted_cats where posted_by=?'
+    offset = request.args.get('offset', '') or 0
+    limit = request.args.get('limit', '') or -1
+    query = f'select url from posted_cats where posted_by=? ' \
+            f'limit {limit} offset {offset}'
     cats = sql_transaction(query, (id, ))
+    if isinstance(cats, sqlite3.Error):
+        return make_response({"Error": str(cats)})
+    return jsonify([c for t in cats for c in t])
+
+
+@app.route('/api/users/<int:id>/cats/<string:breed>', methods=['GET'])
+def user_cats_with_breed(id, breed):
+    offset = request.args.get('offset', '') or 0
+    limit = request.args.get('limit', '') or -1
+    query = f'select url from posted_cats where posted_by=? ' \
+            f'and (select breed from cats_photos where photoUrl=url)=?' \
+            f'limit {limit} offset {offset}'
+    cats = sql_transaction(query, (id, breed))
     if isinstance(cats, sqlite3.Error):
         return make_response({"Error": str(cats)})
     return jsonify([c for t in cats for c in t])
@@ -215,7 +231,9 @@ def get_breeds_for_user(id):
 @app.route('/api/cats', methods=['GET'])
 def cats():
     if request.method == 'GET':
-        query = 'select * from cats_photos'
+        offset = request.args.get('offset', '') or 0
+        limit = request.args.get('limit', '') or -1
+        query = f'select * from cats_photos limit {limit} offset {offset}'
         photos = sql_transaction(query)
         query = 'select by_user from likes where photo=?'
         if isinstance(photos, sqlite3.Error):
@@ -224,14 +242,6 @@ def cats():
                                            'breed': p[2], 'owner': p[3],
                                            'likes': [t[0] for t in sql_transaction(query, (p[0], ))]},
                                 photos)))
-
-
-@app.route('/api/cats/<int:start>/list/<int:length>', methods=['GET'])
-def list_of_photos(start, length):
-    query = 'select id from cats_photos where id>=? limit ?'
-    ids = sql_transaction(query, (start, length))
-    ids = [t[0] for t in ids]
-    return jsonify(ids)
 
 
 @app.route('/api/cats/photo', methods=['GET'])
@@ -245,7 +255,9 @@ def cats_url():
 
 @app.route('/api/cats/<string:breed>', methods=['GET'])
 def cats_photo_by_breed(breed):
-    query = 'select * from cats_photos where breed=?'
+    offset = request.args.get('offset', '') or 0
+    limit = request.args.get('limit', '') or -1
+    query = f'select * from cats_photos where breed=? limit {limit} offset {offset}'
     photos = sql_transaction(query, (breed, ))
     if isinstance(photos, sqlite3.Error):
         return make_response({"Error": str(photos)}, 500)

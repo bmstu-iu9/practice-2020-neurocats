@@ -15,7 +15,13 @@ method:
 
 /api/users/<int:id>/cats (DONE)
 method:
-    GET: returns list of urls of cats' photos User with id liked 
+    GET: returns list of urls of cats' photos User with id liked(limit and offset url keys optionally)
+
+
+/api/users/<int:id>/cats/<string:breed> (DONE)
+method:
+    GET: return CatsPhotos' urls with breed posted by user with id(limit and offset url keys optionally)
+
 
 /api/users/<int:id>/photo: (DONE)
     method:
@@ -38,13 +44,8 @@ CatsPhotos:
 
 /api/cats (DONE)
 method:
-    GET: returns all CatsPhoto
+    GET: returns all CatsPhoto(limit and offset url keys optionally)
 
-
-
-/api/cats/<int:start>/list/<int:length> (DONE)
-methods:
-    GET: return sequence of photos' id from id start to id start+length-1
 
 /api/cats/photo (DONE)
 method:
@@ -54,7 +55,7 @@ method:
 
 /api/cats/<string:breed> (DONE)
 method:
-    GET: returns all CatsPhoto with breed
+    GET: returns all CatsPhoto with breed(limit and offset url keys optionally)
 
 
 /api/cats/<string:breed>/photo (DONE)

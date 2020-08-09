@@ -5,10 +5,6 @@
   font-weight: 100;
   width: 100%; 
 }
-.content button {
-  border: none;
-  background: none;
-}
 .block, .button1, .button2, .button3 {
   position: relative;
   padding: 0;

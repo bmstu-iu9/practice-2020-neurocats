@@ -21,8 +21,8 @@ SECRET_KEY = os.urandom(24)
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'photos'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-# cors = CORS(app, resources={r"/*": {"origins": r"^https?://localhost(:[0-9]{1,5})?$"},
-#                             r"/": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": r"^https?://localhost(:[0-9]{1,5})?$"},
+                             r"/": {"origins": "*"}})
 
 
 def sql_transaction(query='', data=()):

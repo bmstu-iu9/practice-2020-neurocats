@@ -8,10 +8,9 @@ import ServerError from "../../ServerError/ServerError";
 
 interface Props {
     userId: number,
-    userCats: number[]
 }
 
-function Folders({userId, userCats}: Props) {
+function Folders({userId}: Props) {
 
     // data loading (userFolders)
     const {result, loading, error} = useAsync(useCallback(() => Axios.get<string[]>(`/users/${userId}/folder`), [userId]));

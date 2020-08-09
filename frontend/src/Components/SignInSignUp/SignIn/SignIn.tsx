@@ -1,8 +1,11 @@
 import React from "react";
 import classes from "./SignIn.module.css"
-import ButtonTemplate from "../../Button/ButtonTemplate";
+import Button from "../../Button/Button";
+import {useHistory} from "react-router";
 
-function SignIn(props: any) {
+function SignIn() {
+    const history = useHistory();
+
     return (
         <form method="get" className={classes.form}>
             <div className={classes.inputContainer}>
@@ -14,12 +17,8 @@ function SignIn(props: any) {
             </div>
 
             <div className={classes.buttons}>
-                <button className={classes.button1}>
-                    <ButtonTemplate name="Sign in" type="dark" to="/home" />
-                </button>
-                <button className={classes.button2}>
-                    <ButtonTemplate name="Sign up" type="dark" to="/signUp" />
-                </button>
+                <Button type={"dark"} onClick={() => history.push("/home")}>Sign in</Button>
+                <Button type={"dark"} onClick={() => history.push("/signUp")}>Sign up</Button>
             </div>
         </form>
     );

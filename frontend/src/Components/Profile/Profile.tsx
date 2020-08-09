@@ -37,13 +37,10 @@ function Profile() {
                 />
             </div>
             <div className={classes.item}>
-                <Folders
-                    userId={user.id}
-                    userCats={user.userCatsPhotoUrl}
-                />
+                <Folders userId={user.id}/>
             </div>
             <div className={classes.item}>
-                <IdentifyBreed id={user.id}/>
+                <IdentifyBreed userId={user.id}/>
             </div>
 
             { isOwn &&

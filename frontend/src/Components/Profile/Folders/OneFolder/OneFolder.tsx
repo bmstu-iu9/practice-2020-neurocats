@@ -24,6 +24,8 @@ function OneFolder({id, breed}: Props) {
     const row1 = cards.slice(0, 2);
     const row2 = cards.slice(2);
 
+    if (!breed) return <div/>;
+
     return (
         <div className={classes.OneFile}>
             <Link to={`/${id}/folder`} className={classes.files}>
@@ -34,7 +36,7 @@ function OneFolder({id, breed}: Props) {
                     {row2.map((e, i) => <PhotoCard key={i} url={e}/>)}
                 </div>
             </Link>
-            <div className={classes.name}>{breed}</div>
+            <div className={classes.name}>{`${breed.slice(0, 5)}`}</div>
         </div>
     );
 }

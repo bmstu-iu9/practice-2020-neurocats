@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 import classes from "./Settings.module.css"
-import ButtonTemplate from "../../Button/ButtonTemplate";
 import {useUser} from "../../../context";
+import Button from "../../Button/Button";
 
 interface Props {
   email: string,
@@ -38,7 +38,7 @@ function Settings({email}: Props) {
     <div className={classes.content}>
       {
         editState ?
-          (<div className={classes.block}>
+          <div className={classes.block}>
             <div>Settings</div>
 
             <div className={classes.item}>E-mail: {email}</div>
@@ -61,21 +61,12 @@ function Settings({email}: Props) {
             </div>
 
             <div className={classes.buttons}>
-              <button className={classes.button1} onClick={() => saveChanges}>
-                <ButtonTemplate name="Save" type="dark" to="#s"/>
-              </button>
-              <button className={classes.button2} onClick={() => {
-                setEditState(false);
-              }}>
-                <ButtonTemplate name="Close" type="dark" to="#s"/>
-              </button>
+              <Button type={"dark"} onClick={saveChanges}>Save</Button>
+              <Button type={"dark"} onClick={() => setEditState(false)}>Close</Button>
             </div>
-          </div>)
+          </div>
           :
-          (<button className={classes.button3} onClick={() => { setEditState(true) }}>
-            <div className={classes.name}>Settings</div>
-          </button>
-          )
+            <Button type={"dark"} onClick={() => setEditState(true)}>Settings</Button>
       }
     </div>
   );

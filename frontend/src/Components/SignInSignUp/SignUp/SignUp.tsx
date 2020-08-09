@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import classes from "./SignUp.module.css"
-import ButtonTemplate from "../../Button/ButtonTemplate";
+import Button from "../../Button/Button";
+import {useHistory} from "react-router";
 
-function SignUp(props: any) {
+function SignUp() {
+    const history = useHistory();
+
     const[username, setUsername] = useState('');
     const[email, setEmail] = useState('');
     const[password, setPassword] = useState('');
@@ -31,12 +34,8 @@ function SignUp(props: any) {
                 onChange={e => setRepeatPass(e.target.value)}/>
             </div>
             <div className={classes.buttons}>
-                <button className={classes.button1}>
-                    <ButtonTemplate name="Sign up" type="dark" to="#s" />
-                </button>
-                <button className={classes.button2}>
-                    <ButtonTemplate name="Sign in" type="dark" to="/signIn" />
-                </button>
+                <Button type={"dark"} onClick={() => {}}>Sign up</Button>
+                <Button type={"dark"} onClick={() => history.push("/signIn")}>Sign in</Button>
             </div>
         </form>
     );

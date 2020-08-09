@@ -1,14 +1,14 @@
 import React, {useCallback} from "react";
 import classes from "./IdentifyBreed.module.css"
-import ButtonTemplate from "../../Button/ButtonTemplate";
 import Axios from "axios";
 import {useUser} from "../../../context";
+import Button from "../../Button/Button";
 
 interface Props {
-    id: number
+    userId: number
 }
 
-function IdentifyBreed({id} : Props) {
+function IdentifyBreed({userId} : Props) {
     const myUser = useUser();
 
     const uploadPhoto = useCallback(() => {
@@ -36,9 +36,7 @@ function IdentifyBreed({id} : Props) {
     return (
         <div className={classes.contentPink}>
             <div className={classes.name}>Identify the breed</div>
-            <button className={classes.button1} onClick={uploadPhoto}>
-                <ButtonTemplate name="Add photo" type="light" to="#s" />
-            </button>
+            <Button type={"light"} onClick={uploadPhoto}>Add photo</Button>
         </div>
     );
 }

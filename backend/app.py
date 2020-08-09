@@ -1,26 +1,28 @@
 import json
 import os
-from random import  choice
+from random import choice
 from string import ascii_uppercase
+import datetime
 
 from flask import Flask, request, make_response, jsonify, abort, send_from_directory
 from hashlib import md5
 from flask_cors import CORS
 import sqlite3
+import jwt
 
 from api import User
 
-template_dir = os.path.abspath('../frontend/public')
 
 ALLOWED_EXTENSIONS = ('png', 'jpg', 'jpeg')
 PHOTO_NAME_EXPECTED = 'file'
+SECRET_KEY = os.urandom(24)
 
 # initializing flask stuff
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'photos'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-cors = CORS(app, resources={r"/*": {"origins": r"^https?://localhost(:[0-9]{1,5})?$"},
-                            r"/": {"origins": "*"}})
+# cors = CORS(app, resources={r"/*": {"origins": r"^https?://localhost(:[0-9]{1,5})?$"},
+#                             r"/": {"origins": "*"}})
 
 
 def sql_transaction(query='', data=()):
@@ -374,6 +376,44 @@ def unlike_cat(id):
     if isinstance(res, sqlite3.Error):
         return make_response({"Error": str(res)}, 424)
     return make_response({'code': 'SUCCESS'})
+
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    try:
+        email = request.get_json()['email']
+        password = request.get_json()['password']
+    except KeyError:
+        return 'Wrong json input'
+    query = "select * from users where email='{0}'".format(email)
+    resp = sql_transaction(query)
+    if isinstance(resp, sqlite3.Error):
+        return make_response({"Error": str(resp)}, 424)
+    elif not resp:
+        return jsonify('Wrong email or password')
+    else:
+        resp = resp[0]
+        user = {'id': resp[0], 'email': resp[1],
+                'password': resp[2], 'name': resp[3],
+                'photoUrl': resp[4]}
+        if user['password'] == password:
+            try:
+                payload = {
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(
+                        days=36500),
+                    'iat': datetime.datetime.utcnow(),
+                    'sub': user['id']
+                }
+                token = jwt.encode(
+                    payload,
+                    SECRET_KEY,
+                    algorithm='HS256'
+                )
+            except Exception as e:
+                return jsonify(e)
+            return jsonify({'user': user, 'token': str(token)})
+        else:
+            return jsonify('Wrong email or password')
 
 
 if __name__ == 'main':

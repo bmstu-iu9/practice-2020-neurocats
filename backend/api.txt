@@ -85,3 +85,9 @@ method:
 
 ---------------------------------------------
 
+/api/login
+method:
+    POST: requires json with email and password, if they match db
+          returns user and token
+
+

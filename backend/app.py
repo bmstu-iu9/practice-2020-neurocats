@@ -226,10 +226,10 @@ def cats():
 
 @app.route('/api/cats/<int:start>/list/<int:length>', methods=['GET'])
 def list_of_photos(start, length):
-    query = 'select photoUrl from cats_photos where id>=? limit ?'
-    urls = sql_transaction(query, (start, length))
-    urls = [t[0] for t in urls]
-    return jsonify(urls)
+    query = 'select id from cats_photos where id>=? limit ?'
+    ids = sql_transaction(query, (start, length))
+    ids = [t[0] for t in ids]
+    return jsonify(ids)
 
 
 @app.route('/api/cats/photo', methods=['GET'])

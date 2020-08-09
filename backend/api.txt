@@ -44,7 +44,7 @@ method:
 
 /api/cats/<int:start>/list/<int:length> (DONE)
 methods:
-    GET: return sequence of photos from id start to id start+length-1
+    GET: return sequence of photos' id from id start to id start+length-1
 
 /api/cats/photo (DONE)
 method:

@@ -46,7 +46,7 @@ function CatCard(props: Props) {
         <div className={classes.container}>
             <img
                 className={`${classes.cat} ${cat.photoUrl ? "" : classes.emptyCat}`}
-                src={`http://localhost:5000/api${cat.photoUrl}`} alt={"ava"}
+                src={`http://localhost:5000/api${cat.photoUrl}`} alt={"cat"}
             />
             <div className={classes.cover} />
             <div className={classes.breed}>

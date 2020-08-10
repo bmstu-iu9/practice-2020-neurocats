@@ -2,6 +2,7 @@ import React, {useCallback, useState} from "react";
 import classes from "./Settings.module.css"
 import {useUser} from "../../../context";
 import Button from "../../Button/Button";
+import Axios from "axios";
 
 interface Props {
   email: string,
@@ -19,17 +20,14 @@ function Settings({email}: Props) {
 
   const saveChanges = useCallback(async () => {
     if (password === repeatPass) {
-      //TODO with back
-
-      // try {
-      //   await Axios.patch(`/users/${myUser.id}`, {
-      //     email: address,
-      //     password: oldPassword,
-      //     newPassword: password
-      //   });
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      try {
+        await Axios.patch(`/users/${myUser.id}`, {
+          email: address,
+          password: password,
+        });
+      } catch (e) {
+        console.log(e);
+      }
       setEditState(false);
     }
   }, [address, password, oldPassword, repeatPass, setEditState, myUser.id]);

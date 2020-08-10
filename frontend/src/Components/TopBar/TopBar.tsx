@@ -16,7 +16,11 @@ function TopBar() {
                     className={classes.item}
                     activeClassName={classes.active}
                 >
-                    <img src={logo} className={classes.img} alt="logo"/>
+                    { logo ?
+                        <img src={logo} className={classes.img} alt="logo"/>
+                        :
+                        <div className={classes.emptyAva}/>
+                    }
                     <span>Neurocats</span>
                 </NavLink>
             </li>
@@ -29,9 +33,13 @@ function TopBar() {
                     className={classes.item}
                     activeClassName={classes.active}>
                     <span>{user.name}</span>
-                    <img
+                    {user.photoUrl ?
+                        <img
                         className={`${classes.img} ${classes.ava} ${user.photoUrl ? "" : classes.empty}`}
-                        src={`http://localhost:5000/api${user.photoUrl}`} alt={"ava"}/>
+                        src={`http://localhost:5000/api${user.photoUrl}`}/>
+                        :
+                        <div className={classes.emptyAva}/>
+                    }
                 </NavLink>
             </li>
       </ul >

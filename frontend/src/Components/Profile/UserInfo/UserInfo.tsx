@@ -53,10 +53,13 @@ function UserInfo({isOwn, user, refetchUser}: Props) {
     return (
         <div className={classes.UserInfo}>
             <div className={classes.ava}>
-                <img
-                    className={`${user.photoUrl ? "" : classes.empty}`}
-                    src={`http://localhost:5000/api${user.photoUrl}`} alt={"ava"}
-                />
+                {user.photoUrl ?
+                    <img
+                        className={`${classes.img} ${classes.ava} ${user.photoUrl ? "" : classes.empty}`}
+                        src={`http://localhost:5000/api${user.photoUrl}`}/>
+                    :
+                    <div className={classes.emptyAva}/>
+                }
                 {isOwn &&
                     <div className={classes.avaEdit} onClick={changeAvatar}>
                         <span>Изменить</span>

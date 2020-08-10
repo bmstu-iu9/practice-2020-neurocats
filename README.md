@@ -11,7 +11,7 @@ using an embedded neural network.
 * Yulia Hrobak - frontend, 
 * Farida Bazartinova - frontend,
 * Victor Florya - backend,
-* Ilya Getikov machine learning/backend, 
+* Ilya Getikov - machine learning/backend, 
 * German Kulchitsky - machine learning.
 
 ## Чтобы запустить локально приложение необходимо:

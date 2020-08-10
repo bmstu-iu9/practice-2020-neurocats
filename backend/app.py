@@ -6,6 +6,7 @@ import datetime
 from functools import reduce
 
 from flask import Flask, request, make_response, jsonify, abort, send_from_directory
+from fastai.vision import Path, load_learner, open_image
 from hashlib import md5
 from flask_cors import CORS
 import sqlite3
@@ -23,6 +24,11 @@ app.config['UPLOAD_FOLDER'] = 'photos'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 cors = CORS(app, resources={r"/*": {"origins": r"^https?://localhost(:[0-9]{1,5})?$"},
                             r"/": {"origins": "*"}})
+
+# load model
+path_model = os.path.join(os.path.abspath('..'), 'ml', 'images')
+dir_photo = 'photos'
+model = load_learner(Path(path_model))
 
 
 def sql_transaction(query='', data=()):
@@ -303,9 +309,14 @@ def cats_photo_by_id(id):
         suffix = (''.join(choice(ascii_uppercase)) for i in range(12))
         name = md5((file.filename + str(suffix)).encode()).hexdigest()
         name += os.path.splitext(file.filename)[1].strip().lower()
+        if not os.path.isfile(f'{app.config["UPLOAD_FOLDER"]}/{name}'):
+            file.save(f'{app.config["UPLOAD_FOLDER"]}/{name}')
+        photo = open_image(Path(dir_photo) / name)
+        cat_breed, _, _ = model.predict(photo)
+        print(cat_breed)
         query = 'insert into cats_photos(photoUrl, breed, owner) values(?, ?, ?)'
         path = os.path.join('/photo/', name)
-        res = sql_transaction(query, (path, "", id))
+        res = sql_transaction(query, (path, str(cat_breed), id))
         if isinstance(res, sqlite3.Error):
             return make_response({"Error": str(res)}, 424)
         query = 'insert into posted_cats(posted_by, url) values(?, ?)'
@@ -317,9 +328,6 @@ def cats_photo_by_id(id):
         res = sql_transaction(query, (path,))
         if isinstance(res, sqlite3.Error):
             return make_response({"Error": str(res)}, 422)
-
-        if not os.path.isfile(f'{app.config["UPLOAD_FOLDER"]}/{name}'):
-            file.save(f'{app.config["UPLOAD_FOLDER"]}/{name}')
         return {'code': 'SUCCESS', 'url': path, 'id': res[0][0]}
     else:
         query = 'delete from cats_photos where id=?'

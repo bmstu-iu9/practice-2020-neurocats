@@ -19,15 +19,16 @@ Team members:
 
 2. Запустить бэк (в папке /backend)
   - Убедитесь что у вас установлен python3
-  2. pip3 install virtualenv
-  3. pip install -r requirements.txt
-  4. virtualenv env
-  5. env\Scripts\activate.bat (каждый раз при перезапуске консоли или IDE)
-  6. flask run (каждый раз при перезапуске консоли или IDE)
+  - pip3 install virtualenv
+  - pip install -r requirements.txt
+  - virtualenv env
+  - env\Scripts\activate.bat (каждый раз при перезапуске консоли или IDE)
+  - flask run (каждый раз при перезапуске консоли или IDE)
 
-3. Запуск статического фронта - открыть url, на котором работает бэкенд. (Статический фронт будет обновляться раз в пару дней по достижении существенного прогресса)
+3. Запуск статического фронта (Статический фронт будет обновляться раз в пару дней по достижении существенного прогресса)
+  - открыть url, на котором работает бэкенд.
 
 4. Запуск фронта в режиме разработки (в папке /frontend)
-  1. yarn install
-  2. yarn start
-  3. Открыть http://localhost:3000
+  - yarn install
+  - yarn start
+  - Открыть http://localhost:3000

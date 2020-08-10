@@ -1,7 +1,13 @@
 .folders {
+  display: grid;
+  padding: 10px;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+}
+.row {
   display: flex;
   flex-flow: row;
-  margin-left: 3.5%;
+  justify-content: space-around;
   align-items: center;
 }
 .blocksPink {

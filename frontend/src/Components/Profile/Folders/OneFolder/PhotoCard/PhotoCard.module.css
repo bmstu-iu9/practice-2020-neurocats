@@ -1,10 +1,10 @@
 .photo2 {
-  height: 66px;
-  width: 66px;
+  height: 70px;
+  width: 70px;
   background: #f8f4ff;
 }
 .photo1 img {
   object-fit: cover;
-  width: 66px;
-  height: 66px;
+  width: 70px;
+  height: 70px;
 }

@@ -36,18 +36,17 @@ function Profile() {
                     refetchUser={refetch}
                 />
             </div>
-            <div className={classes.item}>
-                <Folders userId={user.id}/>
-            </div>
-            <div className={classes.item}>
-                <IdentifyBreed userId={user.id}/>
-            </div>
-
             { isOwn &&
             <div className={classes.item}>
                 <Settings email={user.email}/>
             </div>
             }
+            <div className={classes.item}>
+                <IdentifyBreed userId={user.id}/>
+            </div>
+            <div className={classes.item}>
+                <Folders userId={user.id}/>
+            </div>
         </div>
     );
 }

@@ -36,7 +36,7 @@ function OneFolder({id, breed}: Props) {
                     {row2.map((e, i) => <PhotoCard key={i} url={e}/>)}
                 </div>
             </Link>
-            <div className={classes.name}>{`${breed.slice(0, 5)}`}</div>
+            <div className={classes.name}>{`${breed.slice(0, 26)}${(breed.length > 26) ? "..." : ""}`}</div>
         </div>
     );
 }

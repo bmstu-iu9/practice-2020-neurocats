@@ -14,6 +14,7 @@ function Folders({userId}: Props) {
 
     // data loading (userFolders)
     const {result, loading, error} = useAsync(useCallback(() => Axios.get<string[]>(`/users/${userId}/folder`), [userId]));
+
     if (result === undefined && loading) return <Loader/>;
     if (result === undefined || error) return <ServerError message={error?.message ?? "undefined folders"}/>;
 
@@ -21,9 +22,11 @@ function Folders({userId}: Props) {
 
     return (
         <div className={classes.blocksPink} >
-            <div className={classes.name}>Folders:</div>
+            <div className={classes.name}>Your folders:</div>
             <div className={classes.folders}>
-                {folders.map((el, ind) => <OneFolder key={ind} id={userId} breed={el}/>)}
+                {
+                    folders.map((el, id) => <OneFolder key={id} id={userId} breed={el}/>)
+                }
             </div>
         </div>
     );

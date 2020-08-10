@@ -63,24 +63,24 @@ method:
     GET: returns urls of CatsPhoto with breed
 
 
-/api/cats/<int:id> (DONE)
+/api/cat/<int:id> (DONE)
 method:
     GET: returns CatsPhoto with id
     POST: requires photo passed with form, posts it by user with id
     DELETE: deletes CatsPhoto with id
 
 
-/api/cats/<int:id>/photo (DONE)
+/api/cat/<int:id>/photo (DONE)
 method:
     GET: returns url of CatsPhoto with id
     PATCH: requires photo passed with form
 
 
-/api/cats/<int:id>/like (DONE)
+/api/cat/<int:id>/like (DONE)
 method:
         PATCH: likes CatsPhoto with id by current user
 
-/api/cats/<int:id>/unlike (DONE)
+/api/cat/<int:id>/unlike (DONE)
 method:
     PATCH: delete like by current user if exists
 

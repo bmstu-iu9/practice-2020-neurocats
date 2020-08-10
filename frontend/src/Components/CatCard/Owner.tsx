@@ -1,10 +1,8 @@
 import classes from "./CatCard.module.css";
 import {Link} from "react-router-dom";
-import React, {useCallback} from "react";
-import {useAsync} from "../../../helps/useAsync";
-import Axios from "axios";
-import {User} from "../../../types";
-import Loader from "../../Loader/Loader";
+import React from "react";
+import {User} from "../../types";
+import useAxios from "axios-hooks";
 
 interface Props {
     ownerId: number;
@@ -13,15 +11,16 @@ interface Props {
 function Owner({ownerId}: Props) {
 
     // data loading (owner)
-    const {result: ownerData, loading: loadOwner, error: errorOwner} = useAsync(useCallback(
-        () => Axios.get<User>(`/users/${ownerId}`), [ownerId]));
+    // const {result: ownerData, loading: loadOwner, error: errorOwner} = useAsync(useCallback(
+    //     () => Axios.get<User>(`/users/${ownerId}`), [ownerId]));
+    const [{data: owner, loading: loadOwner, error: errorOwner}] = useAxios<User>({
+        url: `/users/${ownerId}`
+    });
 
-    //if (loadOwner) return <Loader/>;
-    if (!ownerData || errorOwner) return <div/>;
+    if (loadOwner) return <div className={classes.owner}/>;
+    if (!owner || errorOwner) return <div className={classes.owner}/>;
 
-    const {data: owner} = ownerData;
-
-    return(
+    return (
         <Link className={classes.owner} to={owner ? `/${owner.id}` : "/neurocats"}>
             <img
                 className={`${classes.ava} ${owner.photoUrl ? "" : classes.empty}`}

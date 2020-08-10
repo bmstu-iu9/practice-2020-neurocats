@@ -1,45 +1,46 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import classes from "./CatCard.module.css";
-import {CatsPhoto} from "../../../types";
+import {CatsPhoto} from "../../types";
 import Axios from "axios";
-import {useAsync} from "../../../helps/useAsync";
-import {useUser} from "../../../context";
-import EmptyCatCard from "./EmptyCatCard";
+import {useUser} from "../../context";
 import Owner from "./Owner";
+import useAxios from "axios-hooks";
+import EmptyCatCard from "./EmptyCatCard";
 
 interface Props {
-    catId: string,
+    cat: CatsPhoto,
 }
 
-function CatCard({ catId }: Props) {
-
+function CatCard(props: Props) {
+    const [cat, setCat] = useState(props.cat);
     const myUser = useUser();
 
-    // data loading (cat)
-    const {result: catData, loading: loadCat, error: errorCat, refetch: refetchCat} = useAsync(useCallback(
-        () => Axios.get<CatsPhoto>(`/cats/${catId}`), [catId]));
+    const [, refetchCat] = useAxios<CatsPhoto>({
+        url: `/cat/${cat.id}`
+    }, {
+        manual: true
+    });
 
     const like = useCallback(async () => {
         try {
-            await Axios.patch(`/cats/${catData?.data.id}/like`, myUser);
-            await refetchCat();
+            await Axios.patch(`/cat/${cat.id}/like`, myUser);
+            const {data: newCat} = await refetchCat();
+            setCat(newCat);
         } catch (e) {
             console.log(e);
         }
-    }, [refetchCat, catData, myUser]);
+    }, [refetchCat, cat, myUser]);
     const unLike = useCallback(async () => {
         try {
-            await Axios.patch(`/cats/${catData?.data.id}/unlike`, myUser);
-            await refetchCat();
+            await Axios.patch(`/cat/${cat.id}/unlike`, myUser);
+            const {data: newCat} = await refetchCat();
+            setCat(newCat);
         } catch (e) {
             console.log(e);
         }
-    }, [refetchCat, catData, myUser]);
+    }, [refetchCat, cat, myUser]);
 
-    if (!catData && loadCat) return <EmptyCatCard/>;
-    if (!catData || errorCat) return <EmptyCatCard/>;
-
-    const {data: cat} = catData;
+    if (!props.cat) return <EmptyCatCard/>
 
     return (
         <div className={classes.container}>

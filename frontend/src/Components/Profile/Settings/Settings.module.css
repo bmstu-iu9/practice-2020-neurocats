@@ -9,19 +9,11 @@
   position: relative;
   padding: 0;
 }
-.button3 {
-  height: 20px;
-  cursor: pointer;
-  outline: none;
-}
-.button1, .button2 {
-  margin-top: 2%;
-  width: 35%;
-}
 .buttons{
   display: flex;
   flex-flow: column;
   cursor: pointer;
+  width: 35%;
 }
 .block{
   width: 100%;

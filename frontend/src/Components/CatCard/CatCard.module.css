@@ -8,8 +8,8 @@
 
 .container {
     position: relative;
-    margin-right: 5px;
-    margin-top: 5px;
+    /*margin-right: 5px;*/
+    /*margin-top: 5px;*/
     height: 180px;
     width: 180px;
     color: black;
@@ -60,7 +60,7 @@
     display: none;
 }
 .liked > i {
-    color: #ff8080;
+    color: #ff4d4d;
 }
 
 .owner {

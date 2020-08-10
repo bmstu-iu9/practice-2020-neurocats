@@ -1,7 +1,6 @@
 import React, {useCallback} from "react";
 import classes from "./IdentifyBreed.module.css"
 import Axios from "axios";
-import {useUser} from "../../../context";
 import Button from "../../Button/Button";
 
 interface Props {
@@ -9,7 +8,6 @@ interface Props {
 }
 
 function IdentifyBreed({userId} : Props) {
-    const myUser = useUser();
 
     const uploadPhoto = useCallback(() => {
         const input: HTMLInputElement = document.createElement("input");
@@ -31,7 +29,7 @@ function IdentifyBreed({userId} : Props) {
             }
             document.body.removeChild(input);
         };
-    }, [myUser]);
+    }, []);
 
     return (
         <div className={classes.contentPink}>

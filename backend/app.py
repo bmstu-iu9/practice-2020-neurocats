@@ -3,6 +3,7 @@ import os
 from random import choice
 from string import ascii_uppercase
 import datetime
+from functools import reduce
 
 from flask import Flask, request, make_response, jsonify, abort, send_from_directory
 from hashlib import md5
@@ -11,7 +12,6 @@ import sqlite3
 import jwt
 
 from api import User
-
 
 ALLOWED_EXTENSIONS = ('png', 'jpg', 'jpeg')
 PHOTO_NAME_EXPECTED = 'file'
@@ -22,7 +22,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'photos'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 cors = CORS(app, resources={r"/*": {"origins": r"^https?://localhost(:[0-9]{1,5})?$"},
-                             r"/": {"origins": "*"}})
+                            r"/": {"origins": "*"}})
 
 
 def sql_transaction(query='', data=()):
@@ -111,7 +111,7 @@ def all_users():
 def one_user(id):
     if request.method == 'GET':
         query = 'select * from users where id=?'
-        user_data = sql_transaction(query, (id, ))
+        user_data = sql_transaction(query, (id,))
         if isinstance(user_data, sqlite3.Error):
             return make_response({'Error': str(user_data)}, 424)
         elif user_data:
@@ -119,14 +119,14 @@ def one_user(id):
                                "password": u[2], "name": u[3],
                                "photoUrl": u[4]})(user_data[0])
             query = 'select url from posted_cats where posted_by=?'
-            photos = sql_transaction(query, (id, ))
+            photos = sql_transaction(query, (id,))
             user['userCatsPhotoUrl'] = ([f for t in photos for f in t])
             return jsonify(user)
         else:
             abort(404)
     elif request.method == 'PATCH':
         update = request.get_json()
-        query = 'UPDATE users SET {0}=(?) where id='+str(id)
+        query = 'UPDATE users SET {0}=(?) where id=' + str(id)
         data = list(update.items())
         cur = None
         conn = None
@@ -136,7 +136,7 @@ def one_user(id):
             for field in data:
                 if field[0] == 'id':
                     continue
-                cur.execute(query.format(field[0]), (field[1], ))
+                cur.execute(query.format(field[0]), (field[1],))
             conn.commit()
         except sqlite3.Error as error:
             if conn is not None:
@@ -162,7 +162,7 @@ def user_cats(id):
     limit = request.args.get('limit', '') or -1
     query = f'select url from posted_cats where posted_by=? ' \
             f'limit {limit} offset {offset}'
-    cats = sql_transaction(query, (id, ))
+    cats = sql_transaction(query, (id,))
     if isinstance(cats, sqlite3.Error):
         return make_response({"Error": str(cats)})
     return jsonify([c for t in cats for c in t])
@@ -172,20 +172,20 @@ def user_cats(id):
 def user_cats_with_breed(id, breed):
     offset = request.args.get('offset', '') or 0
     limit = request.args.get('limit', '') or -1
-    query = f'select url from posted_cats where posted_by=? ' \
-            f'and (select breed from cats_photos where photoUrl=url)=?' \
-            f'limit {limit} offset {offset}'
+    query = f'select * from cats_photos where owner=? and breed=? limit {limit} offset {offset}'
+    queryLikes = f'select by_user from likes where photo=?'
     cats = sql_transaction(query, (id, breed))
     if isinstance(cats, sqlite3.Error):
         return make_response({"Error": str(cats)})
-    return jsonify([c for t in cats for c in t])
+    return jsonify(list(map(lambda c: {"id": c[0], "photoUrl": c[1], "breed": c[2], "owner": c[3],
+                                  "likes": [t[0] for t in sql_transaction(queryLikes, (c[0],))]}, cats)))
 
 
 @app.route('/api/users/<int:id>/photo', methods=['GET', 'POST'])
 def user_photo(id):
     if request.method == 'GET':
         query = 'select photoUrl from users where id=?'
-        photo = sql_transaction(query, (id, ))
+        photo = sql_transaction(query, (id,))
         if isinstance(photo, sqlite3.Error):
             return make_response({"Error": str(photo)})
         elif photo:
@@ -195,7 +195,7 @@ def user_photo(id):
     else:
         if PHOTO_NAME_EXPECTED not in request.files:
             return make_response({"Error: ":
-                                  f'No {PHOTO_NAME_EXPECTED} field has found'},
+                                      f'No {PHOTO_NAME_EXPECTED} field has found'},
                                  400)
         file = request.files[PHOTO_NAME_EXPECTED]
         if not file.filename or not allowed_file(file.filename):
@@ -221,7 +221,7 @@ def send_photo(path):
 @app.route('/api/users/<int:id>/folder', methods=['GET'])
 def get_breeds_for_user(id):
     query = 'select breed from cats_photos where owner=?'
-    breeds = sql_transaction(query, (id, ))
+    breeds = sql_transaction(query, (id,))
     if isinstance(breeds, sqlite3.Error):
         return make_response({"Error": str(breeds)}, 424)
     breeds = [t[0] for t in breeds]
@@ -240,7 +240,7 @@ def cats():
             return make_response({"Error": str(photos)}, 500)
         return jsonify(list(map(lambda p: {'id': p[0], 'photoUrl': p[1],
                                            'breed': p[2], 'owner': p[3],
-                                           'likes': [t[0] for t in sql_transaction(query, (p[0], ))]},
+                                           'likes': [t[0] for t in sql_transaction(query, (p[0],))]},
                                 photos)))
 
 
@@ -258,26 +258,26 @@ def cats_photo_by_breed(breed):
     offset = request.args.get('offset', '') or 0
     limit = request.args.get('limit', '') or -1
     query = f'select * from cats_photos where breed=? limit {limit} offset {offset}'
-    photos = sql_transaction(query, (breed, ))
+    photos = sql_transaction(query, (breed,))
     if isinstance(photos, sqlite3.Error):
         return make_response({"Error": str(photos)}, 500)
     query = 'select by_user from likes where photo=?'
     return jsonify(list(map(lambda p: {'id': p[0], 'photoUrl': p[1],
                                        'breed': p[2], 'owner': p[3],
-                                       'likes': [t[0] for t in sql_transaction(query, (p[0], ))]},
+                                       'likes': [t[0] for t in sql_transaction(query, (p[0],))]},
                             photos)))
 
 
 @app.route('/api/cats/<string:breed>/photo', methods=['GET'])
 def cats_url_by_breed(breed):
     query = 'select photoUrl from cats_photos where breed=?'
-    urls = sql_transaction(query, (breed, ))
+    urls = sql_transaction(query, (breed,))
     if isinstance(urls, sqlite3.Error):
         return make_response({"Error": str(urls)}, 500)
     return jsonify([t[0] for t in urls])
 
 
-@app.route('/api/cats/<int:id>', methods=['GET', 'POST', 'DELETE'])
+@app.route('/api/cat/<int:id>', methods=['GET', 'POST', 'DELETE'])
 def cats_photo_by_id(id):
     if request.method == 'GET':
         query = 'select * from cats_photos where id=?'
@@ -288,14 +288,14 @@ def cats_photo_by_id(id):
             query = 'select by_user from likes where photo=?'
             return jsonify((lambda p: {'id': p[0], 'photoUrl': p[1],
                                        'breed': p[2], 'owner': p[3],
-                                       'likes': [t[0] for t in sql_transaction(query, (p[0], ))]})
+                                       'likes': [t[0] for t in sql_transaction(query, (p[0],))]})
                            (photo[0]))
         else:
             abort(404)
     elif request.method == 'POST':
         if PHOTO_NAME_EXPECTED not in request.files:
             return make_response({"Error: ":
-                                  f'No {PHOTO_NAME_EXPECTED} field has found'},
+                                      f'No {PHOTO_NAME_EXPECTED} field has found'},
                                  400)
         file = request.files[PHOTO_NAME_EXPECTED]
         if not file.filename or not allowed_file(file.filename):
@@ -324,7 +324,7 @@ def cats_photo_by_id(id):
             return make_response({"code": 'SUCCESS'}, 204)
 
 
-@app.route('/api/cats/<int:id>/photo', methods=['GET', 'PATCH'])
+@app.route('/api/cat/<int:id>/photo', methods=['GET', 'PATCH'])
 def cats_url_by_id(id):
     if request.method == 'GET':
         query = 'select photoUrl from cats_photos where id=?'
@@ -338,7 +338,7 @@ def cats_url_by_id(id):
     else:
         if PHOTO_NAME_EXPECTED not in request.files:
             return make_response({"Error: ":
-                                  f'No {PHOTO_NAME_EXPECTED} field has found'},
+                                      f'No {PHOTO_NAME_EXPECTED} field has found'},
                                  400)
         file = request.files[PHOTO_NAME_EXPECTED]
         if not file.filename or not allowed_file(file.filename):
@@ -356,20 +356,20 @@ def cats_url_by_id(id):
         return {'code': 'SUCCESS', 'url': data}
 
 
-@app.route('/api/cats/<int:id>/like', methods=['PATCH'])
+@app.route('/api/cat/<int:id>/like', methods=['PATCH'])
 def like_cat(id):
     user = request.get_json()
     if 'id' not in user:
         return make_response({"Error": "No user id passed"}, 400)
     query = 'select photo from likes where by_user=?'
-    liked = sql_transaction(query, (user['id'], ))
+    liked = sql_transaction(query, (user['id'],))
     if isinstance(liked, sqlite3.Error):
         return make_response({"Error: ": str(liked)}, 424)
-    elif not liked or (id, ) not in liked:
+    elif not liked or (id,) not in liked:
         test1 = 'select * from users where id=?'
         test2 = 'select * from cats_photos where id=?'
-        if not sql_transaction(test1, (user['id'], )) or \
-           not sql_transaction(test2, (id, )):
+        if not sql_transaction(test1, (user['id'],)) or \
+                not sql_transaction(test2, (id,)):
             return make_response({"Error": "Invalid id"}, 400)
         query = 'insert into likes(photo, by_user) values(?, ?)'
         res = sql_transaction(query, (id, user['id']))
@@ -378,7 +378,7 @@ def like_cat(id):
     return make_response({'code': 'SUCCESS'})
 
 
-@app.route('/api/cats/<int:id>/unlike', methods=['PATCH'])
+@app.route('/api/cat/<int:id>/unlike', methods=['PATCH'])
 def unlike_cat(id):
     user = request.get_json()
     if 'id' not in user:
@@ -430,4 +430,3 @@ def login():
 
 if __name__ == 'main':
     app.run(debug=True)
-

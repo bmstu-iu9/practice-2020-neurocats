@@ -1,10 +1,9 @@
 .button {
     position: relative;
 
-    width: 200px;
     height: 40px;
     margin: 10px;
-    padding: 10px 0;
+    padding: 10px 10px;
 
     display: flex;
     justify-content: center;
@@ -17,7 +16,7 @@
     color:black;
     font-family: "Times New Roman", sans-serif;
     transition: transform .2s linear;
-    font-size:20px ;
+    font-size:20px;
     font-weight:100;
 }
 

@@ -1,0 +1,18 @@
+.container {
+    background: white;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.catsGrid {
+    min-width: 800px;
+    min-height: 500px;
+
+    display: grid;
+    padding: 30px;
+    background: #EFD8D3;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 10px;
+}

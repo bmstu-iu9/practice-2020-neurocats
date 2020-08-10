@@ -1,11 +1,11 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import classes from "./Button.module.css"
 
 interface Props {
     className?: string;
     type: "light" | "dark";
     onClick: () => void;
-    children: string;
+    children: string | ReactElement;
 }
 
 function Button({className, type, onClick, children} : Props) {

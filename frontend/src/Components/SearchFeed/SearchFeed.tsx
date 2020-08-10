@@ -1,24 +1,27 @@
+import CatsPage from "../CatsPage/CatsPage";
 import React, {useCallback, useState} from "react";
-import classes from "./CatsFeed.module.css";
-import Axios from "axios";
 import {useAsync} from "../../helps/useAsync";
+import Axios from "axios";
 import Loader from "../Loader/Loader";
 import ErrorFeed from "../CatsPage/ErrorFeed";
-import CatsPage from "../CatsPage/CatsPage";
-import Button from "../Button/Button";
 import {CatsPhoto} from "../../types";
+import classes from "./SearchFeed.module.css";
+import Button from "../Button/Button";
+import {useParams} from "react-router";
 
-function CatsFeed() {
+function SearchFeed() {
+    const params = useParams<{ breed: string }>();
     const [page, setPage] = useState(0);
 
     // data loading (cats)
     const {result, loading, error} = useAsync(useCallback(
-        () => Axios.get<CatsPhoto[]>(`/cats`, {
+        () => Axios.get<CatsPhoto[]>(`/cats/${params.breed}`, {
             params: {
                 offset: (page * 15),
                 limit: 15
             }
-        }), [page]));
+        }), [params, page]));
+
     if (loading) return <Loader/>;
     if (!result || error || !result.data.length) return <div><ErrorFeed/></div>;
 
@@ -27,6 +30,9 @@ function CatsFeed() {
     return (
         <div className={classes.container}>
             <div className={classes.header}>
+                <span className={classes.name}>
+                    {params.breed}
+                </span>
                 <div className={classes.controls}>
                     <Button type={"dark"} onClick={() => setPage((page > 0 ? page - 1 : 0))}>
                         <i className="fas fa-arrow-left"/>
@@ -42,4 +48,4 @@ function CatsFeed() {
     )
 }
 
-export default CatsFeed;
+export default SearchFeed;

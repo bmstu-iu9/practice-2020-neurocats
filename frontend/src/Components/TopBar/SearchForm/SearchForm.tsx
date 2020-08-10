@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import classes from "./SearchForm.module.css";
 import PopUp, {PopUpContent, PopUpTrigger} from "../../PopUp/PopUp";
+import {useHistory} from "react-router";
 
 interface Props {
     className?: string
@@ -8,25 +9,72 @@ interface Props {
 
 const breeds = [
     "Abyssinian",
+    "American Bobtail",
+    "American Shorthair",
+    "Applehead Siamese",
+    "Balinese",
+    "Bengal",
+    "Birman",
+    "Bombay",
     "British Shorthair",
     "Burmese",
+    "Calico",
+    "Chartreux",
     "Cornish Rex",
     "Devon Rex",
+    "Dilute Calico",
+    "Dilute Tortoiseshell",
+    "Domestic Long Hair",
+    "Domestic Medium Hair",
+    "Domestic Short Hair",
+    "Egyptian Mau",
+    "Exotic Shorthair",
+    "Extra-Toes Cat - Hemingway Polydactyl",
+    "Havana",
     "Himalayan",
+    "Korat",
     "Maine Coon",
     "Manx",
+    "Munchkin",
+    "Nebelung",
+    "Norwegian Forest Cat",
+    "Ocicat",
+    "Oriental Short Hair",
+    "Oriental Tabby",
     "Persian",
+    "Pixiebob",
+    "Ragamuffin",
+    "Ragdoll",
     "Russian Blue",
     "Scottish Fold",
+    "Selkirk Rex",
     "Siamese",
-    "Sphynx",
+    "Siberian",
+    "Snowshoe",
+    "Sphynx - Hairless Cat",
+    "Tabby",
+    "Tiger",
+    "Tonkinese",
+    "Torbie",
+    "Tortoiseshell",
     "Turkish Angora",
-    "Turkish Van"
+    "Turkish Van",
+    "Tuxedo",
 ];
 
 function SearchForm({className}: Props) {
+    const history = useHistory();
 
     const [searchText, setSearchText] = useState("");
+
+    const search = useCallback(() => {
+        let res = searchText;
+        setSearchText("");
+        if (breeds.findIndex(el => (el === res)) !== -1)
+            return history.push(`/breed/${res}`);
+        else
+            return history.push(`/breed`);
+    }, [searchText, history, setSearchText]);
 
     return (
         <>
@@ -34,7 +82,7 @@ function SearchForm({className}: Props) {
                 <PopUpTrigger>
                     <>
                         <input className={classes.input} type="text" value={searchText} onChange={ev => setSearchText(ev.target.value)} placeholder="Search"/>
-                        <button className={classes.btn}>
+                        <button className={classes.btn} onClick={search}>
                             <i className="fas fa-search"/>
                         </button>
                     </>

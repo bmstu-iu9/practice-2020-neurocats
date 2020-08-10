@@ -5,7 +5,6 @@ import {useAsync} from "../../../../helps/useAsync";
 import Axios from "axios";
 import {CatsPhoto} from "../../../../types";
 import Loader from "../../../Loader/Loader";
-import ErrorFeed from "../../../CatsPage/ErrorFeed";
 
 interface Props {
     id: number,
@@ -23,7 +22,7 @@ function OneFolder({id, breed}: Props) {
         }), [id, breed]));
 
     if (loading) return <Loader/>;
-    if (!result || error || !result.data.length) return <div><ErrorFeed/></div>;
+    if (!result || error || !result.data.length) return <div>Error...</div>;
 
     const {data: cats} = result;
 

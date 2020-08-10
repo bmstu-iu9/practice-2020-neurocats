@@ -36,7 +36,7 @@ function TopBar() {
                     {user.photoUrl ?
                         <img
                         className={`${classes.img} ${classes.ava} ${user.photoUrl ? "" : classes.empty}`}
-                        src={`http://localhost:5000/api${user.photoUrl}`}/>
+                        src={`http://localhost:5000/api${user.photoUrl}`} alt={"ava"}/>
                         :
                         <div className={classes.emptyAva}/>
                     }

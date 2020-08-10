@@ -53,7 +53,9 @@ export class AuthStore {
         } catch (e) {
             console.log("Logout failed:", e);
         }
-        return false;
+        //return false;
+        this.clear();
+        return true;
     }
 
     @action.bound

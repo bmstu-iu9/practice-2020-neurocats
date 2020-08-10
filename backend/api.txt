@@ -1,0 +1,94 @@
+This document describes rest api's URL list
+--------------------------------------------
+
+Users:
+ /api/users (DONE)
+ method:
+    GET: returns all Users
+    POST: requires User's email, password and name fields, creates new User
+
+/api/users/<int:id> (DONE)
+method:
+    GET: returns User's entity with id 
+    PATCH: requires any User  fields except id and userCatsPhotoUrl
+    DELETE: deletes user with id
+
+/api/users/<int:id>/cats (DONE)
+method:
+    GET: returns list of urls of cats' photos User with id liked(limit and offset url keys optionally)
+
+
+/api/users/<int:id>/cats/<string:breed> (DONE)
+method:
+    GET: return CatsPhotos' urls with breed posted by user with id(limit and offset url keys optionally)
+
+
+/api/users/<int:id>/photo: (DONE)
+    method:
+        GET: returns url of user's photo
+        POST: requires photo to be passed with form, sets it as current, returns new url
+
+
+/api/photo/<path:path> (DONE)
+method:
+    GET: return photo by id (full url is returned by corresponding methods)
+
+
+/api/users/<int:id>/folder (DONE)
+methods:
+    GET: return list of breeds for user with id
+
+-----------------------------------------------------------
+CatsPhotos:
+
+
+/api/cats (DONE)
+method:
+    GET: returns all CatsPhoto(limit and offset url keys optionally)
+
+
+/api/cats/photo (DONE)
+method:
+    GET: returns urls of CatsPhotos
+    
+
+
+/api/cats/<string:breed> (DONE)
+method:
+    GET: returns all CatsPhoto with breed(limit and offset url keys optionally)
+
+
+/api/cats/<string:breed>/photo (DONE)
+method:
+    GET: returns urls of CatsPhoto with breed
+
+
+/api/cat/<int:id> (DONE)
+method:
+    GET: returns CatsPhoto with id
+    POST: requires photo passed with form, posts it by user with id
+    DELETE: deletes CatsPhoto with id
+
+
+/api/cat/<int:id>/photo (DONE)
+method:
+    GET: returns url of CatsPhoto with id
+    PATCH: requires photo passed with form
+
+
+/api/cat/<int:id>/like (DONE)
+method:
+        PATCH: likes CatsPhoto with id by current user
+
+/api/cat/<int:id>/unlike (DONE)
+method:
+    PATCH: delete like by current user if exists
+
+---------------------------------------------
+
+/api/login
+method:
+    POST: requires json with email and password, if they match db
+          returns user and token
+
+

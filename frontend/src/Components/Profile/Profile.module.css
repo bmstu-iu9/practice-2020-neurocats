@@ -1,0 +1,16 @@
+.profile img {
+  height: 300px;
+}
+.profile {
+  padding: 0 20%;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 20px ; 
+  font-weight: 100;
+}
+
+.item:not(:first-of-type) {
+  padding-top: 10px;
+}
+.item {
+  width: 100%;
+}

@@ -1,0 +1,25 @@
+.popUp {
+    position: relative;
+    display: flex;
+}
+
+.popUp[data-side="left"] {
+    justify-content: flex-start;
+}
+
+.popUp[data-side="center"] {
+    justify-content: flex-start;
+}
+
+.popUp[data-side="right"] {
+    justify-content: flex-start;
+}
+
+.popUpContent {
+    position: absolute;
+    top: 100%;
+    z-index: 3;
+    box-shadow: 0 1px 5px #aaaaaa;
+    background: white;
+    min-width: 100%;
+}

@@ -1,0 +1,33 @@
+.content {
+  color: black;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 20px;
+  font-weight: 100;
+  width: 100%; 
+}
+.block, .button1, .button2, .button3 {
+  position: relative;
+  padding: 0;
+}
+.buttons{
+  display: flex;
+  flex-flow: column;
+  cursor: pointer;
+  width: 35%;
+}
+.block{
+  width: 100%;
+}
+.item {
+  margin-top: 2%;
+}
+.field{
+  background: #f2f1f0;
+  border: none;
+  outline: none;
+  width: 35%;
+  height: 42px;
+}
+.name, .button2 {
+  margin-bottom: 30px;
+}

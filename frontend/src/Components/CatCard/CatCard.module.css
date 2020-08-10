@@ -1,0 +1,108 @@
+.emptyCard {
+    margin-right: 5px;
+    margin-top: 5px;
+    height: 180px;
+    width: 180px;
+    background: white;
+}
+
+.container {
+    position: relative;
+    /*margin-right: 5px;*/
+    /*margin-top: 5px;*/
+    height: 180px;
+    width: 180px;
+    color: black;
+    font-family: "Times New Roman", sans-serif;
+    font-size: 15px;
+    font-weight: 100;
+}
+
+.cat {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.emptyCat {
+    height: 100%;
+    width: 100%;
+    background: gray;
+}
+
+.cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: black;
+    opacity: 50%;
+    display: none;
+}
+.breed {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 90px;
+    min-height: 18px;
+    background: #EFD8D3;
+    text-align: center;
+    padding: 2px;
+    display: none;
+}
+
+.like {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+    display: none;
+}
+.liked > i {
+    color: #ff4d4d;
+}
+
+.owner {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: white;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-decoration: none;
+}
+
+.ava {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: none;
+}
+.name {
+    display: none;
+}
+.empty {
+    background: gray;
+}
+.container:hover .cover{
+    display: block;
+}
+.container:hover .breed{
+    display: block;
+}
+.container:hover .like{
+    display: block;
+}
+.container:hover .liked{
+    display: block;
+}
+.container:hover .name{
+    display: block;
+}
+.container:hover .ava{
+    display: block;
+}

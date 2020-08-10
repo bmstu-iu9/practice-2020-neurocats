@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 42px;
+  background: #f2f1f0;
+}
+
+.input {
+  height: 100%;
+  width: calc(100% - 57px);
+  padding: 0;
+  margin-left: 15px;
+
+  border: none;
+  background: none;
+
+  font-size:22px ;
+  font-weight: 100;
+}
+
+.input:focus, textarea:focus, input:focus{
+  outline: none;
+}
+
+.btn {
+  height: 100%;
+  width: 42px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.btn > i {
+  color: #ccc;
+}
+
+.popup {
+  min-height: 42px;
+  padding: 0px 15px 15px 15px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.chip {
+  display: flex;
+  height: 30px;
+  margin-top: 15px;
+  margin-right: 15px;
+  padding: 0 20px;
+  align-items: center;
+  outline: none;
+  border: none;
+  background: #f2f1f0;
+  white-space: nowrap;
+  color: black;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 15px;
+  font-weight: 100;
+  cursor: pointer;
+}

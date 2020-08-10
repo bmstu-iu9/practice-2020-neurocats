@@ -1,0 +1,42 @@
+.OneFile {
+  height: 190px;
+  width: 150px;
+  margin: 10px;
+
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  text-decoration: none;
+}
+.files{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+
+  background: #e6e6e6;
+
+  width: 144px;
+  height: 144px;
+  border-radius: 5px;
+}
+.card {
+  width: 72px;
+  height: 72px;
+}
+.photo {
+  max-width: 72px;
+  max-height: 72px;
+  object-fit: cover;
+}
+
+.name {
+  margin-top: 4px;
+  color: black;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 20px ; 
+  font-weight: 100;
+  text-decoration: none;
+  text-align: center;
+}

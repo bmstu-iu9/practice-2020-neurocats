@@ -1,8 +1,8 @@
 import classes from "./CatCard.module.css";
 import {Link} from "react-router-dom";
 import React from "react";
-import {User} from "../../types";
 import useAxios from "axios-hooks";
+import {User} from "../../store/AuthStore/types";
 
 interface Props {
     ownerId: number;

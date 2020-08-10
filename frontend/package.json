@@ -13,6 +13,9 @@
   "dependencies": {
     "axios": "^0.19.2",
     "axios-hooks": "^2.1.0",
+    "cryptojs": "^2.5.3",
+    "mobx": "^5.15.5",
+    "mobx-react-lite": "^2.0.7",
     "normalize.css": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

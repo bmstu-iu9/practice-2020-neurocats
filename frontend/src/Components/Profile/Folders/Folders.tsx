@@ -22,7 +22,7 @@ function Folders({userId}: Props) {
 
     return (
         <div className={classes.blocksPink} >
-            <div className={classes.name}>Your folders:</div>
+            <div className={classes.name}>Folders:</div>
             <div className={classes.folders}>
                 {
                     folders.map((el, id) => <OneFolder key={id} id={userId} breed={el}/>)

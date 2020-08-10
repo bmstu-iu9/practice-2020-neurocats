@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 import classes from "./UserInfo.module.css"
 import Axios from "axios";
-import {User} from "../../../types";
+import {User} from "../../../store/AuthStore/types";
 
 interface Props {
     isOwn: boolean

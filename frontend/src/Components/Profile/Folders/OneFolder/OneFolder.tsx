@@ -1,7 +1,11 @@
-import React from "react";
+import React, {useCallback} from "react";
 import classes from "./OneFolder.module.css"
-import PhotoCard from "./PhotoCard/PhotoCard";
 import {Link} from "react-router-dom";
+import {useAsync} from "../../../../helps/useAsync";
+import Axios from "axios";
+import {CatsPhoto} from "../../../../types";
+import Loader from "../../../Loader/Loader";
+import ErrorFeed from "../../../CatsPage/ErrorFeed";
 
 interface Props {
     id: number,
@@ -9,35 +13,35 @@ interface Props {
 }
 
 function OneFolder({id, breed}: Props) {
-    const cards = [];
 
-    for (let i = 0; i < 3; i++) {
-        cards.push("https://www.sunhome.ru/i/foto/211/bolshaya-panda.orig.jpg");
-    }
+    // data loading (cats)
+    const {result, loading, error} = useAsync(useCallback(
+        () => Axios.get<CatsPhoto[]>(`/users/${id}/cats/${breed}`, {
+            params: {
+                limit: 4
+            }
+        }), [id, breed]));
 
-    if (cards.length !== 4) {
-        while (cards.length !== 4) {
-            cards.push("");
-        }
-    }
+    if (loading) return <Loader/>;
+    if (!result || error || !result.data.length) return <div><ErrorFeed/></div>;
 
-    const row1 = cards.slice(0, 2);
-    const row2 = cards.slice(2);
-
-    if (!breed) return <div/>;
+    const {data: cats} = result;
 
     return (
-        <div className={classes.OneFile}>
-            <Link to={`/${id}/folder`} className={classes.files}>
-                <div className={classes.filesRow}>
-                    {row1.map((e, i) => <PhotoCard key={i} url={e}/>)}
-                </div>
-                <div className={classes.filesRow}>
-                    {row2.map((e, i) => <PhotoCard key={i} url={e}/>)}
-                </div>
-            </Link>
+        <Link to={`/${id}/folder/${breed}`} className={classes.OneFile}>
+            <div className={classes.files}>
+                {cats.map((e, i) => <div key={i} className={classes.card}>
+                    <img
+                        className={`${classes.photo}`}
+                        src={`http://localhost:5000/api${e.photoUrl}`} alt={"catPhoto"}
+                    />
+                </div>)}
+                {
+
+                }
+            </div>
             <div className={classes.name}>{`${breed.slice(0, 26)}${(breed.length > 26) ? "..." : ""}`}</div>
-        </div>
+        </Link>
     );
 }
 

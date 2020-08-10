@@ -19,7 +19,7 @@ function Settings({email}: Props) {
 
   const saveChanges = useCallback(async () => {
     if (password === repeatPass) {
-      //TODO with auth
+      //TODO with back
 
       // try {
       //   await Axios.patch(`/users/${myUser.id}`, {

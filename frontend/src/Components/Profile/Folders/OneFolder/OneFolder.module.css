@@ -7,21 +7,29 @@
   flex-flow: column;
   justify-content: flex-start;
   align-items: center;
+
+  text-decoration: none;
 }
 .files{
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+
+  background: #e6e6e6;
+
   width: 144px;
   height: 144px;
+  border-radius: 5px;
 }
-
-.filesRow {
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;
+.card {
+  width: 72px;
+  height: 72px;
 }
-
+.photo {
+  max-width: 72px;
+  max-height: 72px;
+  object-fit: cover;
+}
 
 .name {
   margin-top: 4px;

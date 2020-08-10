@@ -1,31 +1,29 @@
-import React, {useState} from "react";
+import React from "react";
 import "./App.css";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import {UserProvider} from "../context";
-import {User} from "../types";
 import MainPage from "./SignInSignUp/MainPage";
 import NotFound from "./404/404";
 import MainApp from "./MainApp";
+import {useStores} from "../store/store";
+import {observer} from "mobx-react-lite";
+import {toJS} from "mobx";
 
-interface Props {
-  user: User;
+function App() {
+    const {authStore} = useStores();
+    const {user} = authStore;
+
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <Switch>
+                    <Route path={"/404"} exact><NotFound/></Route>
+                    {user ? <UserProvider value={toJS(user)}><MainApp/></UserProvider> : <MainPage/>}
+                    <Redirect to={"/404"}/>
+                </Switch>
+            </BrowserRouter>
+        </div>
+    );
 }
 
-function App({user}: Props) {
-  const [authed] = useState(true);
-  return (
-      <div className="App">
-        <UserProvider value={user}>
-          <BrowserRouter>
-            <Switch>
-              <Route path={"/404"} exact><NotFound/></Route>
-              {authed ? <MainApp/> : <MainPage/>}
-              <Redirect to={"/404"}/>
-            </Switch>
-          </BrowserRouter>
-        </UserProvider>
-      </div>
-  );
-}
-
-export default App;
+export default observer(App);

@@ -8,11 +8,11 @@ photos of cats and identify their breed
 using an embedded neural network.
  
 ## Team members:
-* Yulia Hrobak - frontend, 
-* Farida Bazartinova - frontend,
-* Victor Florya - backend,
-* Ilya Getikov - machine learning/backend, 
-* German Kulchitsky - machine learning.
+* [Yulia Hrobak](https://github.com/yukhrobak/) - frontend, 
+* [Farida Bazartinova](https://github.com/farichase/) - frontend,
+* [Victor Florya](https://github.com/FloryaVictor/) - backend,
+* [Ilya Getikov](https://github.com/IlyaGetikov/) - machine learning/backend, 
+* [German Kulchitsky](https://github.com/jetsnake/) - machine learning.
 
 ## Чтобы запустить локально приложение необходимо:
 ### 1. Выкачать ветку репозитория

@@ -22,10 +22,13 @@ function Owner({ownerId}: Props) {
 
     return (
         <Link className={classes.owner} to={owner ? `/${owner.id}` : "/neurocats"}>
-            <img
-                className={`${classes.ava} ${owner.photoUrl ? "" : classes.empty}`}
-                src={`http://localhost:5000/api${owner.photoUrl}`} alt={"ava"}
-            />
+            {owner.photoUrl ?
+                <img
+                    className={`${classes.img} ${classes.ava} ${owner.photoUrl ? "" : classes.empty}`}
+                    src={`http://localhost:5000/api${owner.photoUrl}`} alt={"ava"}/>
+                :
+                <div className={classes.emptyAva}/>
+            }
             <span className={classes.name}>{owner.name}</span>
         </Link>
     )

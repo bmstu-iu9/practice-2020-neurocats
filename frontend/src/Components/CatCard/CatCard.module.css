@@ -20,13 +20,13 @@
 
 .cat {
     object-fit: cover;
-    height: 100%;
-    width: 100%;
+    height: 180px;
+    width: 180px;
 }
 
 .emptyCat {
-    height: 100%;
-    width: 100%;
+    height: 180px;
+    width: 180px;
     background: gray;
 }
 
@@ -81,6 +81,15 @@
     border-radius: 50%;
     object-fit: cover;
     display: none;
+}
+.emptyAva {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: #aaaaaa;
 }
 .name {
     display: none;

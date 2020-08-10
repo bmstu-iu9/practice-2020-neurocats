@@ -312,9 +312,15 @@ def cats_photo_by_id(id):
         res = sql_transaction(query, (id, path))
         if isinstance(res, sqlite3.Error):
             return make_response({"Error": str(res)}, 424)
+
+        query = 'select id from cats_photos where photoUrl=?'
+        res = sql_transaction(query, (path,))
+        if isinstance(res, sqlite3.Error):
+            return make_response({"Error": str(res)}, 422)
+
         if not os.path.isfile(f'{app.config["UPLOAD_FOLDER"]}/{name}'):
             file.save(f'{app.config["UPLOAD_FOLDER"]}/{name}')
-        return {'code': 'SUCCESS', 'url': path}
+        return {'code': 'SUCCESS', 'url': path, 'id': res[0][0]}
     else:
         query = 'delete from cats_photos where id=?'
         photo = sql_transaction(query, (id,))

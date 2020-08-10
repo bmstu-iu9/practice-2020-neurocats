@@ -18,7 +18,7 @@ function Folders({userId}: Props) {
     if (result === undefined && loading) return <Loader/>;
     if (result === undefined || error) return <ServerError message={error?.message ?? "undefined folders"}/>;
 
-    const {data: folders} = result;
+    const folders = result.data.filter(el => (el !== "")); // filter to check backend errors
 
     return (
         <div className={classes.blocksPink} >

@@ -6,11 +6,24 @@
     font-family: "Times New Roman", sans-serif;
     color: black;
     text-decoration: none;
-    font-size: 20px ; 
     font-weight: 100;
     margin-bottom: 2%;
     width: 20%;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
 }
+
+.form > * {
+    margin-bottom: 20px;
+}
+
+.block > {
+    margin-bottom: 50px;
+}
+
 .item {
     background: #f2f1f0;
     border: none;
@@ -21,24 +34,9 @@
     padding-right: 2%;
 }
 .inputContainer{
-    margin-top: 5%;
-    width: 100%;
+    margin-top: 60px;
 }
-.buttons {
-    display: flex;
-    flex-flow: column;
-}
-
-.button1,
-.button2 {
-    margin-top: 5%;
-    cursor: pointer;
-    border: none;
-    padding: 0;
-    background: none;
-    width: 100%;
-}
-.errorMsg {
-    margin-top: 5px;
-    color: #d11f1f;
+.inputContainer > span {
+    font-size: 30px;
+    font-weight: 300;
 }

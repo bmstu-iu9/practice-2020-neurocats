@@ -4,6 +4,7 @@ import logo from "../../logo.svg"
 import SignIn from "./SignIn/SignIn";
 import {Redirect, Route, Switch} from "react-router-dom";
 import SignUp from "./SignUp/SignUp";
+import SignUpSuccess from "./SignUpSuccess/SignUpSuccess";
 import Hello from "../Hello/Hello";
 
 
@@ -17,6 +18,7 @@ function MainPage() {
             <Switch>
                 <Route path={"/signIn"} exact><SignIn/></Route>
                 <Route path={"/signUp"} exact><SignUp/></Route>
+                <Route path={"/signUpSuccess"} exact><SignUpSuccess/></Route>
                 <Route path={"/"}><Hello/></Route>
                 <Redirect to={"/404"}/>
             </Switch>

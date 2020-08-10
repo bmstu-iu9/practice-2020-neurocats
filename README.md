@@ -11,7 +11,7 @@ using an embedded neural network.
 * Yulia Hrobak - frontend, 
 * Farida Bazartinova - frontend,
 * Victor Florya - backend,
-* Ilya Getikov machine learnin/backend, 
+* Ilya Getikov machine learning/backend, 
 * German Kulchitsky - machine learning.
 
 ## Чтобы запустить локально приложение необходимо:
@@ -20,9 +20,9 @@ using an embedded neural network.
 ### 2. Запустить бэк (в папке /backend)
   - Убедитесь что у вас установлен python3
   - pip3 install virtualenv
+  - python -m venv name
+  - name\Scripts\activate.bat (каждый раз при перезапуске консоли или IDE)
   - pip install -r requirements.txt
-  - virtualenv env
-  - env\Scripts\activate.bat (каждый раз при перезапуске консоли или IDE)
   - flask run (каждый раз при перезапуске консоли или IDE)
 
 ### 3. Запуск фронта в режиме разработки (в папке /frontend)

@@ -18,7 +18,7 @@ Team members:
 1. Выкачать ветку репозитория
 
 2. Запустить бэк (в папке /backend)
-  1.Убедитесь что у вас установлен python3
+  - Убедитесь что у вас установлен python3
   2. pip3 install virtualenv
   3. pip install -r requirements.txt
   4. virtualenv env

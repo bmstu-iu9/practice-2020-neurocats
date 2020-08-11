@@ -20,7 +20,7 @@ method:
 
 /api/users/<int:id>/cats/<string:breed> (DONE)
 method:
-    GET: return CatsPhotos' urls with breed posted by user with id(limit and offset url keys optionally)
+    GET: return CatsPhotos with breed posted by user with id(limit and offset url keys optionally)
 
 
 /api/users/<int:id>/photo: (DONE)
@@ -66,7 +66,7 @@ method:
 /api/cat/<int:id> (DONE)
 method:
     GET: returns CatsPhoto with id
-    POST: requires photo passed with form, posts it by user with id
+    POST: requires photo passed with form, posts it by user with id(detects and sets its breed)
     DELETE: deletes CatsPhoto with id
 
 
